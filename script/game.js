@@ -30,12 +30,31 @@ var World = function(width, height) {
 	for (var i = 0; i < width; i++) {
 		this.cells[i] = [];
 		for (var j = 0; j < height; j++) {
-			this.cells[i][j] = "test";//null; //elements are (as strings): wall, rock, human, infected, explosive
+			this.cells[i][j] = null; //elements are (as strings): wall, rock, human, infected, explosive
 		}
 	}
 };
 World.prototype.push_actions = function(actions) { //takes an array
 	this.action_queue.push(actions);
+};
+var test_loc = {x: 0, y: 0};
+World.prototype.screen_to_world = function(mouse, x, y, scale, yaw, pitch) { //mouse = {x: num, y: num}
+	var result = {x: mouse.x, y: mouse.y};
+	result.x -= x;
+	result.y -= y;
+	result.x /= scale;
+	result.y /= scale;
+	
+	var scale_amount = Math.cos(pitch);
+	result.y /= scale_amount;
+	
+	result = {	x: result.x*Math.cos(-yaw)-result.y*Math.sin(-yaw),
+				y: result.x*Math.sin(-yaw)+result.y*Math.cos(-yaw)};
+				
+	result.x += this.w/2;
+	result.y += this.h/2;
+	//console.log(result);
+	return result;
 };
 World.prototype.draw = function(ctx, x, y, scale, yaw, pitch) { //x, y are center, yaw, pitch are radians, 0 pitch = top-down
 	while (yaw > Math.PI*2) yaw -= Math.PI*2;
@@ -59,10 +78,10 @@ World.prototype.draw = function(ctx, x, y, scale, yaw, pitch) { //x, y are cente
 			ctx.moveTo(scale*(i-(this.w/2)), scale*(j-(this.h/2)));
 			if (j != this.h) ctx.lineTo(scale*(i-(this.w/2)), scale*(j+1-(this.h/2)));
 			
-			/*if (i != this.w && j != this.h && this.cells[i][j] != null) {
+			if (i != this.w && j != this.h && i == Math.floor(test_loc.x) && j == Math.floor(test_loc.y)) {
 				ctx.moveTo(scale*(i-(this.w/2)), scale*(j-(this.h/2)));
 				ctx.lineTo(scale*(i+1-(this.w/2)), scale*(j+1-(this.h/2)));
-			}*/
+			}
 		}
 	}
 	ctx.stroke();
@@ -169,11 +188,10 @@ function do_render(state, ms, canvas, ctx) {
 	ctx.fillText("seconds: " + Math.floor(ms/10)/100, 0, 10);
 	
 	
-	test_yaw = ms*.0005;
-	test_pitch = Math.PI*.5*Math.abs(Math.cos(ms*.0001));
+	test_yaw = .0001*ms;
 	test_pitch = Math.PI*.4;
 	
-	test_world.draw(ctx, canvas.width/2, canvas.height/2, 32, test_yaw, test_pitch);
+	test_world.draw(ctx, canvas.width/2, canvas.height/2, 48, test_yaw, test_pitch);
 }
 
 var last_timestamp = null;
@@ -181,8 +199,17 @@ function step(frame_begin) {
 	if (last_timestamp == null) last_timestamp = frame_begin;
 	var state_time = window.performance.now()-last_timestamp;
 	
+	test_loc = test_world.screen_to_world(mouse_pos, the_canvas.width/2, the_canvas.height/2, 48, .0001*state_time, Math.PI*.4);
 	do_render(null, state_time, the_canvas, the_ctx);
 	window.requestAnimationFrame(step);
 }
 
+var mouse_pos = {x: 0, y: 0};
+the_canvas.onmousemove = function(e) {
+	if (e.layerX != undefined) {
+		mouse_pos = {x: e.layerX, y: e.layerY};
+	} else {
+		mouse_pos = {x: e.offsetX, y: e.offsetY};
+	}
+};
 window.requestAnimationFrame(step);
