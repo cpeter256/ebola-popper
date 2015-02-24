@@ -68,6 +68,8 @@ World.prototype.draw = function(ctx, x, y, scale, yaw, pitch) { //x, y are cente
 	ctx.stroke();
 	ctx.restore();
 	
+	
+	//Reeks of smell, beware!
 	var cx;
 	var cy;
 	
@@ -142,6 +144,8 @@ var Action = function(x, y, action) {
 	this.y = y;
 	this.action = action;
 };
+
+
 
 //testing code, this crap better not be in our final build
 var the_canvas = document.getElementById("game_canvas");
