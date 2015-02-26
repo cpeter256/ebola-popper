@@ -43,7 +43,7 @@ World.prototype.handle_input = function(start, end) { //start, end = {x: num, y:
 		//get cell contents at start
 		var cell_pos = {x: Math.floor(start.x), y: Math.floor(start.y)};
 		if (cell_pos.x < 0 || cell_pos.x >= this.w || cell_pos.y < 0 || cell_pos.y >= this.h) return;
-		var actor = cells[cell_pos.x][cell_pos.y];
+		var actor = this.cells[cell_pos.x][cell_pos.y];
 		
 		//ignore if the actor is unmovable
 		if (actor == "wall" || actor == "rock") return;
@@ -52,8 +52,15 @@ World.prototype.handle_input = function(start, end) { //start, end = {x: num, y:
 		//make sure end is actually valid though
 		var end_pos = {x: Math.floor(end.x), y: Math.floor(end.y)};
 		if (end_pos.x < 0 || end_pos.x >= this.w || end_pos.y < 0 || end_pos.y >= this.h) return;
+		
+		//ignore if the space is occupied (and not staying in place)
+		actor = this.cells[end_pos.x][end_pos.y];
+		if (actor != null && (cell_pos.x != end_pos.x || cell_pos.y != end_pos.y)) return;
+		
 		var dir = null;
-		if (end_pos.x == cell_pos.x) {
+		if (end_pos.x == cell_pos.x && end_pos.y == cell_pos.y) {
+			dir = "wait";
+		} else if (end_pos.x == cell_pos.x) {
 			if (end_pos.y == cell_pos.y+1) dir = "down";
 			else if (end_pos.y == cell_pos.y-1) dir = "up";
 		} else if (end_pos.y == cell_pos.y) {
@@ -62,7 +69,7 @@ World.prototype.handle_input = function(start, end) { //start, end = {x: num, y:
 		}
 		
 		if (dir != null) {
-			actions.push([new Action(cell_pos.x, cell_pos.y, dir)]);
+			this.action_queue.push([new Action(cell_pos.x, cell_pos.y, dir)]);
 		}
 	}
 };
