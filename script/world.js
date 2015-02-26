@@ -37,6 +37,35 @@ World.prototype.screen_to_world = function(mouse, x, y, scale, yaw, pitch) { //m
 	//console.log(result);
 	return result;
 };
+World.prototype.handle_input = function(start, end) { //start, end = {x: num, y: num}
+	//ignore it if there's still actions in the queue- player cant do actions while previous turn isnt over
+	if (this.action_queue.length == 0) {
+		//get cell contents at start
+		var cell_pos = {x: Math.floor(start.x), y: Math.floor(start.y)};
+		if (cell_pos.x < 0 || cell_pos.x >= this.w || cell_pos.y < 0 || cell_pos.y >= this.h) return;
+		var actor = cells[cell_pos.x][cell_pos.y];
+		
+		//ignore if the actor is unmovable
+		if (actor == "wall" || actor == "rock") return;
+		
+		//queue an action to move it to end (via left, right, up, down)
+		//make sure end is actually valid though
+		var end_pos = {x: Math.floor(end.x), y: Math.floor(end.y)};
+		if (end_pos.x < 0 || end_pos.x >= this.w || end_pos.y < 0 || end_pos.y >= this.h) return;
+		var dir = null;
+		if (end_pos.x == cell_pos.x) {
+			if (end_pos.y == cell_pos.y+1) dir = "down";
+			else if (end_pos.y == cell_pos.y-1) dir = "up";
+		} else if (end_pos.y == cell_pos.y) {
+			if (end_pos.x == cell_pos.x+1) dir = "right";
+			else if (end_pos.x == cell_pos.x-1) dir = "left";
+		}
+		
+		if (dir != null) {
+			actions.push([new Action(cell_pos.x, cell_pos.y, dir)]);
+		}
+	}
+};
 World.prototype.draw = function(ctx, x, y, scale, yaw, pitch) { //x, y are center, yaw, pitch are radians, 0 pitch = top-down
 	while (yaw > Math.PI*2) yaw -= Math.PI*2;
 	while (yaw < 0) yaw += Math.PI*2;
