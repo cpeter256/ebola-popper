@@ -70,7 +70,7 @@ var main_function = function() {
 		if (last_timestamp == null) last_timestamp = frame_begin;
 		var state_time = window.performance.now()-last_timestamp;
 		
-		global_yaw = state_time*.0001;
+		global_yaw = state_time*.000025;
 		
 		//this shit depends on world.js, remove (or modify) once we kill all the debug code
 		test_loc = test_world.screen_to_world(mouse_pos, the_canvas.width/2, the_canvas.height/2, 48, global_yaw, global_pitch);
