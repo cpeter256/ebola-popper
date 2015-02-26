@@ -24,7 +24,16 @@ function test_sleep(ms) {
 }
 
 
-
+function draw_border(canvas, ctx) {
+	ctx.strokeStyle = "#000000";
+	ctx.beginPath();
+	ctx.moveTo(0, 0);
+	ctx.lineTo(canvas.width, 0);
+	ctx.lineTo(canvas.width, canvas.height);
+	ctx.lineTo(0, canvas.height);
+	ctx.lineTo(0, 0);
+	ctx.stroke();
+};
 
 var main_function = function() {
 	//testing code, this crap better not be in our final build
@@ -63,6 +72,8 @@ var main_function = function() {
 		
 		test_loc = test_world.screen_to_world(mouse_pos, the_canvas.width/2, the_canvas.height/2, 48, .0001*state_time, Math.PI*.4);
 		do_render(null, state_time, the_canvas, the_ctx);
+		//render border in software instead of css
+		draw_border(the_canvas, the_ctx);
 		window.requestAnimationFrame(step);
 	}
 	
