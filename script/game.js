@@ -80,13 +80,17 @@ function main_function() {
 	var d_pitch = 0;
 	
 	//still smelly test shit
-	var test_world = new World(10, 10);
-	for (var i = 0; i < 5; i++) {
-		var x = Math.floor(Math.random()*test_world.w);
-		var y = Math.floor(Math.random()*test_world.h);
-		//console.log(Math.random(test_world.h));
-		test_world.cells[x][y]= "human";
-	}
+	//hardcoding a level yeaaaaaa
+	var test_world = new World(9, 9);
+	test_world.cells[1][0] = "human";
+	test_world.cells[1][2] = "explosive";
+	test_world.cells[3][1] = "explosive";
+	test_world.cells[3][2] = "explosive";
+	test_world.cells[4][2] = "explosive";
+	test_world.cells[4][3] = "explosive";
+	test_world.cells[5][3] = "explosive";
+	test_world.cells[5][4] = "explosive";
+	test_world.cells[5][5] = "explosive";
 	
 	//TESTING CODE
 	function do_render(state, ms, canvas, ctx) {
