@@ -29,14 +29,6 @@ function loadScripts(urls, final_callback) {
 	build_recursive_bullshit(urls, 0, final_callback)();
 }
 
-//for load testing
-//dont you dare use this in the final build
-function test_sleep(ms) {
-	var timestamp = window.performance.now();
-	while (window.performance.now()-timestamp < ms);
-}
-
-
 function draw_border(canvas, ctx) {
 	ctx.strokeStyle = "#000000";
 	ctx.beginPath();
@@ -48,7 +40,29 @@ function draw_border(canvas, ctx) {
 	ctx.stroke();
 };
 
-var main_function = function() {
+function draw_loadingbar(canvas, ctx, status) {
+	var percent = status.loaded_sprites/status.max;
+	var height = 16;
+	var width = Math.min(canvas.width, 256);
+	var top = canvas.height/2 - height/2;
+	var left = canvas.width/2 - width/2;
+	var center = percent*width;
+	
+	ctx.fillStyle = "#FFFFFF";
+	ctx.fillRect(left, top, width, height);
+	ctx.fillStyle = "#000000";
+	ctx.fillRect(left, top, center, height);
+	ctx.stokeStyle = "#000000";
+	ctx.beginPath();
+	ctx.moveTo(left, top);
+	ctx.lineTo(left+width, top);
+	ctx.lineTo(left+width, top+height);
+	ctx.lineTo(left, top+height);
+	ctx.lineTo(left, top);
+	ctx.stroke();
+}
+
+function main_function() {
 	//testing code, this crap better not be in our final build
 	//who am I kidding most of this will end up in it in some modified form
 	var the_canvas = document.getElementById("game_canvas");
@@ -83,25 +97,39 @@ var main_function = function() {
 		test_world.draw(ctx, canvas.width/2, canvas.height/2, 48, global_yaw+d_yaw, global_pitch+d_pitch);
 	}
 	
+	var loading = null;
+	var get_loadstatus = null;
+	
 	var last_timestamp = null;
 	function step(frame_begin) {
-		if (last_timestamp == null) last_timestamp = frame_begin;
-		var state_time = window.performance.now()-last_timestamp;
-		
-		if (dragging_board) {
-			d_yaw = -Math.PI*(mouse_pos.x-drag_pos.x)/(the_canvas.width);
-			d_pitch = -.5*Math.PI*(mouse_pos.y-drag_pos.y)/(the_canvas.height);
-			if (global_pitch+d_pitch > Math.PI/2) d_pitch = (Math.PI/2)-global_pitch;
-			if (global_pitch+d_pitch < 0) d_pitch = -global_pitch;
+		if (loading == false) { //this is perverse but somehow it turns me on
+			if (last_timestamp == null) last_timestamp = frame_begin;
+			var state_time = window.performance.now()-last_timestamp;
+			
+			if (dragging_board) {
+				d_yaw = -Math.PI*(mouse_pos.x-drag_pos.x)/(the_canvas.width);
+				d_pitch = -.5*Math.PI*(mouse_pos.y-drag_pos.y)/(the_canvas.height);
+				if (global_pitch+d_pitch > Math.PI/2) d_pitch = (Math.PI/2)-global_pitch;
+				if (global_pitch+d_pitch < 0) d_pitch = -global_pitch;
+			}
+			
+			//this shit depends on world.js, remove (or modify) once we kill all the debug code
+			//test_loc = test_world.screen_to_world(mouse_pos, the_canvas.width/2, the_canvas.height/2, 48, global_yaw, global_pitch);
+			
+			//will need more complex logic here eventually, but for now all state happens instantly
+			test_world.advance_state();
+			
+			do_render(null, state_time, the_canvas, the_ctx);
+		} else if (loading == null) {
+			loading = true;
+			get_loadstatus = load_sprites();
+		} else {
+			//loooooading bar
+			var status = get_loadstatus();
+			draw_loadingbar(the_canvas, the_ctx, status);
+			if (status.loaded_sprites >= status.max) loading = false;
 		}
 		
-		//this shit depends on world.js, remove (or modify) once we kill all the debug code
-		//test_loc = test_world.screen_to_world(mouse_pos, the_canvas.width/2, the_canvas.height/2, 48, global_yaw, global_pitch);
-		
-		//will need more complex logic here eventually, but for now all state happens instantly
-		test_world.advance_state();
-		
-		do_render(null, state_time, the_canvas, the_ctx);
 		//render border in software instead of css
 		draw_border(the_canvas, the_ctx);
 		window.requestAnimationFrame(step);
@@ -162,4 +190,4 @@ var main_function = function() {
 	window.requestAnimationFrame(step);
 };
 
-loadScripts(["script/sprite.js", "script/world.js"], main_function);
+loadScripts(["script/debug.js", "script/sprite.js", "script/world.js"], main_function);
