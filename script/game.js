@@ -77,8 +77,8 @@ var main_function = function() {
 	function do_render(state, ms, canvas, ctx) {
 		ctx.fillStyle = "#FFFFFF";
 		ctx.fillRect(0, 0, canvas.width, canvas.height);
-		ctx.fillStyle = "#000000";
-		ctx.fillText("seconds: " + Math.floor(ms/10)/100, 0, 10);
+		//ctx.fillStyle = "#000000";
+		//ctx.fillText("seconds: " + Math.floor(ms/10)/100, 0, 10);
 		
 		test_world.draw(ctx, canvas.width/2, canvas.height/2, 48, global_yaw+d_yaw, global_pitch+d_pitch);
 	}
