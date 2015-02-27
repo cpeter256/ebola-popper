@@ -18,7 +18,7 @@ function load_sprites() { //returns function() returns {loaded_sprites: int, max
 		var img = new Image();
 		img.src = "resource/" + path + ".png";
 		img.name = path;
-		img.onload = function() {sprites[this.name] = img; sprites_loaded++;};
+		img.onload = function() {sprites[this.name] = this; sprites_loaded++;};
 		head.appendChild(img);
 	}
 	
