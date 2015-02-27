@@ -143,6 +143,9 @@ var main_function = function() {
 			dragging_board = false;
 		}
 	};
+	the_canvas.onmouseout = function(e) {
+		the_canvas.onmouseup(e);
+	};
 	window.requestAnimationFrame(step);
 };
 
