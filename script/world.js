@@ -165,7 +165,7 @@ World.prototype.draw = function(ctx, x, y, scale, yaw, pitch) { //x, y are cente
 			t_pos = {	x: t_pos.x*Math.cos(yaw)-t_pos.y*Math.sin(yaw),
 						y: t_pos.x*Math.sin(yaw)+t_pos.y*Math.cos(yaw)};
 			t_pos.y *= scale_amount;
-			t_pos.x += x; t_pos.y += y;
+			t_pos.x += x; t_pos.y += y + (.5*scale - 8)*scale_amount;
 			
 			switch (this.cells[i][j]) {
 			case "human":
