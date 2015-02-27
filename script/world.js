@@ -197,7 +197,7 @@ World.prototype.advance_state = function() {
 		var actions = this.action_queue.shift();
 		for (var i in actions) {
 			var action = actions[i];
-			console.log(action);
+			//console.log(action);
 			switch (action.action) {
 			case "left":
 				this.move({x: action.x, y: action.y}, {x: -1, y: 0});

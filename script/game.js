@@ -124,7 +124,8 @@ var main_function = function() {
 		this.onmousemove(e);
 		if (e.button == 0) {
 			if (drag_pos == null) {
-				console.log("Something broke! (double drag release)");
+				//this is actually pretty normal
+				//console.log("Something broke! (double drag release)");
 			} else if (dragging_board == false) {
 				//moooore smelly testing code
 				test_world.handle_input(test_world.screen_to_world(drag_pos, the_canvas.width/2, the_canvas.height/2, 48, global_yaw, global_pitch),
