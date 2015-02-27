@@ -17,7 +17,7 @@ World.prototype.push_actions = function(actions) { //takes an array
 };
 
 //THIS SHIT NEEDS TO GO BEFORE RELEASE
-var test_loc = {x: 0, y: 0};
+//var test_loc = {x: 0, y: 0};
 
 World.prototype.screen_to_world = function(mouse, x, y, scale, yaw, pitch) { //mouse = {x: num, y: num}
 	var result = {x: mouse.x, y: mouse.y};
@@ -96,10 +96,10 @@ World.prototype.draw = function(ctx, x, y, scale, yaw, pitch) { //x, y are cente
 			ctx.moveTo(scale*(i-(this.w/2)), scale*(j-(this.h/2)));
 			if (j != this.h) ctx.lineTo(scale*(i-(this.w/2)), scale*(j+1-(this.h/2)));
 			
-			if (i != this.w && j != this.h && i == Math.floor(test_loc.x) && j == Math.floor(test_loc.y)) {
+			/*if (i != this.w && j != this.h && i == Math.floor(test_loc.x) && j == Math.floor(test_loc.y)) {
 				ctx.moveTo(scale*(i-(this.w/2)), scale*(j-(this.h/2)));
 				ctx.lineTo(scale*(i+1-(this.w/2)), scale*(j+1-(this.h/2)));
-			}
+			}*/
 			//ctx.moveTo(scale*(test_loc.x-.5-(this.w/2)), scale*(test_loc.y+.5-(this.h/2)));
 			//ctx.lineTo(scale*(test_loc.x+.5-(this.w/2)), scale*(test_loc.y-.5-(this.h/2)));
 		}
@@ -164,11 +164,11 @@ World.prototype.draw = function(ctx, x, y, scale, yaw, pitch) { //x, y are cente
 							y: t_pos.x*Math.sin(yaw)+t_pos.y*Math.cos(yaw)};
 				t_pos.y *= scale_amount;
 				t_pos.x += x; t_pos.y += y;
-				if (Math.floor(test_loc.x) == i && Math.floor(test_loc.y) == j) {
-					ctx.fillStyle = "#00FF00";
-				} else {
+				//if (Math.floor(test_loc.x) == i && Math.floor(test_loc.y) == j) {
+				//	ctx.fillStyle = "#00FF00";
+				//} else {
 					ctx.fillStyle = "#FF0000";
-				}
+				//}
 				ctx.fillRect(t_pos.x-scale*.25, t_pos.y-scale, scale*.5, scale);
 				ctx.strokeStyle = "#000000";
 				ctx.beginPath();

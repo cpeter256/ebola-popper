@@ -73,7 +73,7 @@ var main_function = function() {
 		global_yaw = state_time*.000025;
 		
 		//this shit depends on world.js, remove (or modify) once we kill all the debug code
-		test_loc = test_world.screen_to_world(mouse_pos, the_canvas.width/2, the_canvas.height/2, 48, global_yaw, global_pitch);
+		//test_loc = test_world.screen_to_world(mouse_pos, the_canvas.width/2, the_canvas.height/2, 48, global_yaw, global_pitch);
 		
 		do_render(null, state_time, the_canvas, the_ctx);
 		//render border in software instead of css
