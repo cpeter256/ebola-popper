@@ -1,19 +1,32 @@
 "use strict";
 
-//Used to load a script file required by this one
-//May replace with a better solution, but we only have 1 script file to load right now
-function loadScript(url, callback)
+//Used to load on script and call a callback when it's finished
+function loadScript(path, callback)
 {
     // Adding the script tag to the head as suggested before
     var head = document.getElementsByTagName('head')[0];
     var script = document.createElement('script');
     script.type = 'text/javascript';
-    script.src = url;
+    script.src = path;
 
     script.onload = callback;
 
     // Fire the loading
     head.appendChild(script);
+}
+
+//Loads an array of scripts (in that order), then call final_callback
+function loadScripts(urls, final_callback) {
+	function build_recursive_bullshit(urls, start, final) {
+		if (start >= urls.length) {
+			return final;
+		} else {
+			return function() {
+				loadScript(urls[start], build_recursive_bullshit(urls, start+1, final));
+			};
+		}
+	};
+	build_recursive_bullshit(urls, 0, final_callback)();
 }
 
 //for load testing
@@ -130,7 +143,6 @@ var main_function = function() {
 				//moooore smelly testing code
 				test_world.handle_input(test_world.screen_to_world(drag_pos, the_canvas.width/2, the_canvas.height/2, 48, global_yaw, global_pitch),
 										test_world.screen_to_world(mouse_pos, the_canvas.width/2, the_canvas.height/2, 48, global_yaw, global_pitch));
-				
 			} else {
 				global_yaw += d_yaw;
 				global_pitch += d_pitch;
@@ -150,4 +162,4 @@ var main_function = function() {
 	window.requestAnimationFrame(step);
 };
 
-loadScript("script/world.js", main_function);
+loadScripts(["script/world.js"], main_function);
