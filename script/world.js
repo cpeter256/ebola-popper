@@ -156,14 +156,20 @@ World.prototype.draw = function(ctx, x, y, scale, yaw, pitch) { //x, y are cente
 		for (y_start(); y_pred(); y_inc()) {
 			var i = cx;
 			var j = cy;
-			if (this.cells[i][j] != null) {
-				//testing crap
-				var t_pos = {	x: scale*(i+.5-(this.w/2)),
-								y: scale*(j+.5-(this.h/2))};
-				t_pos = {	x: t_pos.x*Math.cos(yaw)-t_pos.y*Math.sin(yaw),
-							y: t_pos.x*Math.sin(yaw)+t_pos.y*Math.cos(yaw)};
-				t_pos.y *= scale_amount;
-				t_pos.x += x; t_pos.y += y;
+			var t_pos = {	x: scale*(i+.5-(this.w/2)),
+							y: scale*(j+.5-(this.h/2))};
+			t_pos = {	x: t_pos.x*Math.cos(yaw)-t_pos.y*Math.sin(yaw),
+						y: t_pos.x*Math.sin(yaw)+t_pos.y*Math.cos(yaw)};
+			t_pos.y *= scale_amount;
+			t_pos.x += x; t_pos.y += y;
+			
+			switch (this.cells[i][j]) {
+			case "human":
+				ctx.drawImage(sprites["Villager"], 0, 0, 40, 40, t_pos.x-20, t_pos.y-40, 40, 40);
+				break;
+			case null:
+				break;
+			default:
 				//if (Math.floor(test_loc.x) == i && Math.floor(test_loc.y) == j) {
 				//	ctx.fillStyle = "#00FF00";
 				//} else {
