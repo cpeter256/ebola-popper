@@ -46,7 +46,7 @@ World.prototype.handle_input = function(start, end) { //start, end = {x: num, y:
 		var actor = this.cells[cell_pos.x][cell_pos.y];
 		
 		//ignore if the actor is unmovable
-		if (actor == "wall" || actor == "rock") return;
+		if (actor == null || actor == "wall" || actor == "rock") return;
 		
 		//queue an action to move it to end (via left, right, up, down)
 		//make sure end is actually valid though
