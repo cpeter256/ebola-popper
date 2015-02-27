@@ -67,7 +67,10 @@ function main_function() {
 	//who am I kidding most of this will end up in it in some modified form
 	var the_canvas = document.getElementById("game_canvas");
 	var the_ctx = the_canvas.getContext("2d");
-	
+	//OH GOD BROWSERS
+	the_ctx.imageSmoothingEnabled = false;
+	the_ctx.mozImageSmoothingEnabled = false;
+	the_ctx.webkitImageSmoothingEnabled = false;
 	
 	//bad smelly testing shit
 	var global_yaw = Math.PI*.25;
@@ -76,17 +79,15 @@ function main_function() {
 	var d_yaw = 0;
 	var d_pitch = 0;
 	
+	//still smelly test shit
 	var test_world = new World(10, 10);
 	for (var i = 0; i < 5; i++) {
 		var x = Math.floor(Math.random()*test_world.w);
 		var y = Math.floor(Math.random()*test_world.h);
 		//console.log(Math.random(test_world.h));
-		test_world.cells[x][y]= "test";
+		test_world.cells[x][y]= "human";
 	}
 	
-	
-	var test_pitch = 0;
-	var test_yaw = 0;
 	//TESTING CODE
 	function do_render(state, ms, canvas, ctx) {
 		ctx.fillStyle = "#FFFFFF";
