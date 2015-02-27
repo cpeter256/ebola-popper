@@ -162,4 +162,4 @@ var main_function = function() {
 	window.requestAnimationFrame(step);
 };
 
-loadScripts(["script/world.js"], main_function);
+loadScripts(["script/sprite.js", "script/world.js"], main_function);
