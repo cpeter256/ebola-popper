@@ -43,8 +43,12 @@ var main_function = function() {
 	
 	
 	//bad smelly testing shit
-	var global_yaw = 0;
+	var global_yaw = Math.PI*.25;
 	var global_pitch = Math.PI*.4;
+	
+	var d_yaw = 0;
+	var d_pitch = 0;
+	
 	var test_world = new World(10, 10);
 	for (var i = 0; i < 5; i++) {
 		var x = Math.floor(Math.random()*test_world.w);
@@ -56,13 +60,14 @@ var main_function = function() {
 	
 	var test_pitch = 0;
 	var test_yaw = 0;
+	//TESTING CODE
 	function do_render(state, ms, canvas, ctx) {
 		ctx.fillStyle = "#FFFFFF";
 		ctx.fillRect(0, 0, canvas.width, canvas.height);
 		ctx.fillStyle = "#000000";
 		ctx.fillText("seconds: " + Math.floor(ms/10)/100, 0, 10);
 		
-		test_world.draw(ctx, canvas.width/2, canvas.height/2, 48, global_yaw, global_pitch);
+		test_world.draw(ctx, canvas.width/2, canvas.height/2, 48, global_yaw+d_yaw, global_pitch+d_pitch);
 	}
 	
 	var last_timestamp = null;
@@ -70,7 +75,12 @@ var main_function = function() {
 		if (last_timestamp == null) last_timestamp = frame_begin;
 		var state_time = window.performance.now()-last_timestamp;
 		
-		global_yaw = state_time*.000025;
+		if (dragging_board) {
+			d_yaw = -Math.PI*(mouse_pos.x-drag_pos.x)/(the_canvas.width);
+			d_pitch = -.5*Math.PI*(mouse_pos.y-drag_pos.y)/(the_canvas.height);
+			if (global_pitch+d_pitch > Math.PI/2) d_pitch = (Math.PI/2)-global_pitch;
+			if (global_pitch+d_pitch < 0) d_pitch = -global_pitch;
+		}
 		
 		//this shit depends on world.js, remove (or modify) once we kill all the debug code
 		//test_loc = test_world.screen_to_world(mouse_pos, the_canvas.width/2, the_canvas.height/2, 48, global_yaw, global_pitch);
@@ -86,6 +96,7 @@ var main_function = function() {
 	
 	var mouse_pos = {x: 0, y: 0};
 	var drag_pos = null;
+	var dragging_board = false;
 	the_canvas.onmousemove = function(e) {
 		if (e.layerX != undefined) {
 			mouse_pos = {x: e.layerX, y: e.layerY};
@@ -101,6 +112,12 @@ var main_function = function() {
 				console.log("Something broke! (double drag init)");
 			}
 			drag_pos = {x: mouse_pos.x, y: mouse_pos.y}; //good god js is horrifying
+			
+			var world_loc = test_world.screen_to_world(mouse_pos, the_canvas.width/2, the_canvas.height/2, 48, global_yaw, global_pitch);
+			if (world_loc.x < 0 || world_loc.x > test_world.w ||
+				world_loc.y < 0 || world_loc.y > test_world.h) {
+				dragging_board = true;
+			}
 		}
 	};
 	the_canvas.onmouseup = function(e) {
@@ -108,14 +125,22 @@ var main_function = function() {
 		if (e.button == 0) {
 			if (drag_pos == null) {
 				console.log("Something broke! (double drag release)");
-			} else {
+			} else if (dragging_board == false) {
 				//moooore smelly testing code
 				test_world.handle_input(test_world.screen_to_world(drag_pos, the_canvas.width/2, the_canvas.height/2, 48, global_yaw, global_pitch),
 										test_world.screen_to_world(mouse_pos, the_canvas.width/2, the_canvas.height/2, 48, global_yaw, global_pitch));
 				
+			} else {
+				global_yaw += d_yaw;
+				global_pitch += d_pitch;
+				while (global_yaw > Math.PI*2) global_yaw -= Math.PI*2;
+				while (global_yaw < 0) global_yaw += Math.PI*2;
+				d_yaw = 0;
+				d_pitch = 0;
 			}
 			
 			drag_pos = null;
+			dragging_board = false;
 		}
 	};
 	window.requestAnimationFrame(step);
