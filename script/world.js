@@ -167,6 +167,12 @@ World.prototype.draw = function(ctx, x, y, scale, yaw, pitch) { //x, y are cente
 			case "human":
 				ctx.drawImage(sprites["Villager"], 0, 0, 40, 40, t_pos.x-20, t_pos.y-40, 40, 40);
 				break;
+			case "infected":
+				ctx.drawImage(sprites["Infected"], 0, 0, 40, 40, t_pos.x-20, t_pos.y-40, 40, 40);
+				break;
+			case "explosive":
+				ctx.drawImage(sprites["Explosive"], 0, 0, 40, 40, t_pos.x-20, t_pos.y-40, 40, 40);
+				break;
 			case null:
 				break;
 			default:
