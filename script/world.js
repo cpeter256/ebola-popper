@@ -15,6 +15,10 @@ var World = function(width, height) {
 World.prototype.push_actions = function(actions) { //takes an array
 	this.action_queue.push(actions);
 };
+World.prototype.push_action_back = function(action) {
+	if (this.action_queue.length == 0) this.push_actions([]);
+	this.action_queue[this.action_queue.length-1].push(action);
+};
 
 //THIS SHIT NEEDS TO GO BEFORE RELEASE
 //var test_loc = {x: 0, y: 0};
@@ -212,16 +216,37 @@ World.prototype.advance_state = function() {
 			//console.log(action);
 			switch (action.action) {
 			case "left":
-				this.move({x: action.x, y: action.y}, {x: -1, y: 0});
+				var npos = this.move({x: action.x, y: action.y}, {x: -1, y: 0});
+				this.advance_infection(npos);
 				break;
 			case "right":
-				this.move({x: action.x, y: action.y}, {x: 1, y: 0});
+				var npos = this.move({x: action.x, y: action.y}, {x: 1, y: 0});
+				this.advance_infection(npos);
 				break;
 			case "up":
-				this.move({x: action.x, y: action.y}, {x: 0, y: -1});
+				var npos = this.move({x: action.x, y: action.y}, {x: 0, y: -1});
+				this.advance_infection(npos);
 				break;
 			case "down":
-				this.move({x: action.x, y: action.y}, {x: 0, y: 1});
+				var npos = this.move({x: action.x, y: action.y}, {x: 0, y: 1});
+				this.advance_infection(npos);
+				break;
+			case "wait":
+				var npos = {x: action.x, y: action.y};
+				this.advance_infection(npos);
+				break;
+			case "splosion":
+				var adj = [	{x: action.x-1, y: action.y},
+							{x: action.x+1, y: action.y},
+							{x: action.x, y: action.y-1},
+							{x: action.x, y: action.y+1},
+							];
+				for (var j in adj) {
+					//console.log(adj[j]);
+					if (adj[j].x >= 0 && adj[j].x < this.w && adj[j].y >= 0 && adj[j].y < this.h) {
+						this.advance_infection(adj[j], true);
+					}
+				}
 				break;
 			default:
 				console.log("Action \"" + action.action + "\" not yet supported");
@@ -233,4 +258,29 @@ World.prototype.move = function(pos, vec) { //no error checking
 	var npos = {x: pos.x + vec.x, y: pos.y + vec.y};
 	this.cells[npos.x][npos.y] = this.cells[pos.x][pos.y];
 	this.cells[pos.x][pos.y] = null;
+	return npos;
+};
+World.prototype.advance_infection = function(pos, force) { //also no (positional) error checking
+	if (force === undefined) force = false;
+	var current = this.cells[pos.x][pos.y];
+	var next = "error";
+	switch (current) {
+	case "human":
+		if (force) next = "infected";
+		else next = "human";
+		break;
+	case "infected":
+		next = "explosive";
+		break;
+	case "explosive":
+		next = null;
+		this.push_action_back(new Action(pos.x, pos.y, "splosion"));
+		break;
+	case null:
+		next = null;
+		break;
+	default:
+		console.log("YOU BROKE IT DUMBASS");
+	}
+	this.cells[pos.x][pos.y] = next;
 };
