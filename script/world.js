@@ -276,11 +276,8 @@ World.prototype.advance_infection = function(pos, force) { //also no (positional
 		next = null;
 		this.push_action_back(new Action(pos.x, pos.y, "splosion"));
 		break;
-	case null:
-		next = null;
-		break;
 	default:
-		console.log("YOU BROKE IT DUMBASS");
+		next = current;
 	}
 	this.cells[pos.x][pos.y] = next;
 };
