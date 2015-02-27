@@ -192,4 +192,33 @@ World.prototype.advance_state = function() {
 	//pop front of action queue, push relevant actions onto action queue, update cells
 	//remember: action queue is a 2d array- actions[x][y] means an action that takes place x turns from now. All actions with the same y happen simultaneously.
 	//PRECONDITION: there should be no conflicts between actions with the same y. Seriously this shouldn't happen, and we can make sure of that.
+	
+	if (this.action_queue.length > 0) {
+		var actions = this.action_queue.shift();
+		for (var i in actions) {
+			var action = actions[i];
+			console.log(action);
+			switch (action.action) {
+			case "left":
+				this.move({x: action.x, y: action.y}, {x: -1, y: 0});
+				break;
+			case "right":
+				this.move({x: action.x, y: action.y}, {x: 1, y: 0});
+				break;
+			case "up":
+				this.move({x: action.x, y: action.y}, {x: 0, y: -1});
+				break;
+			case "down":
+				this.move({x: action.x, y: action.y}, {x: 0, y: 1});
+				break;
+			default:
+				console.log("Action \"" + action.action + "\" not yet supported");
+			}
+		}
+	}
+};
+World.prototype.move = function(pos, vec) { //no error checking
+	var npos = {x: pos.x + vec.x, y: pos.y + vec.y};
+	this.cells[npos.x][npos.y] = this.cells[pos.x][pos.y];
+	this.cells[pos.x][pos.y] = null;
 };

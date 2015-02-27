@@ -75,6 +75,9 @@ var main_function = function() {
 		//this shit depends on world.js, remove (or modify) once we kill all the debug code
 		//test_loc = test_world.screen_to_world(mouse_pos, the_canvas.width/2, the_canvas.height/2, 48, global_yaw, global_pitch);
 		
+		//will need more complex logic here eventually, but for now all state happens instantly
+		test_world.advance_state();
+		
 		do_render(null, state_time, the_canvas, the_ctx);
 		//render border in software instead of css
 		draw_border(the_canvas, the_ctx);
