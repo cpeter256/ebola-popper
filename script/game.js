@@ -74,7 +74,8 @@ function main_function() {
 	
 	//bad smelly testing shit
 	var global_yaw = Math.PI*.25;
-	var global_pitch = Math.PI*.4;
+	var global_pitch = Math.PI*.3;
+	var max_pitch = Math.PI*.49;
 	
 	var d_yaw = 0;
 	var d_pitch = 0;
@@ -112,9 +113,25 @@ function main_function() {
 			var state_time = window.performance.now()-last_timestamp;
 			
 			if (dragging_board) {
-				d_yaw = -Math.PI*(mouse_pos.x-drag_pos.x)/(the_canvas.width);
-				d_pitch = -.5*Math.PI*(mouse_pos.y-drag_pos.y)/(the_canvas.height);
-				if (global_pitch+d_pitch > Math.PI/2) d_pitch = (Math.PI/2)-global_pitch;
+				//global_pitch = 0;
+				var pitch_scale = Math.cos(global_pitch+d_pitch);
+				var abs_dyaw = Math.atan2((mouse_pos.y-the_canvas.height/2)/pitch_scale, mouse_pos.x-the_canvas.width/2);
+				d_yaw = abs_dyaw-Math.atan2((drag_pos.y-the_canvas.height/2)/pitch_scale, drag_pos.x-the_canvas.width/2);
+				/*var d_dist = 	Math.sqrt(	(mouse_pos.x-the_canvas.width/2)*
+											(mouse_pos.x-the_canvas.width/2) + 
+											(mouse_pos.y-the_canvas.height/2)*
+											(mouse_pos.y-the_canvas.height/2)) -
+								Math.sqrt(	(drag_pos.x-the_canvas.width/2)*
+											(drag_pos.x-the_canvas.width/2) + 
+											(drag_pos.y-the_canvas.height/2)*
+											(drag_pos.y-the_canvas.height/2));*/
+				/*var abs_dscale = Math.abs((mouse_pos.y-(the_canvas.height/2))/(test_world.h*48/2));
+				var init_dscale = Math.abs((drag_pos.y-(the_canvas.height/2))/(test_world.h*48/2));
+				var abs_dpitch = Math.acos(Math.min(1, abs_dscale));
+				var init_dpitch = Math.acos(Math.min(1, init_dscale));
+				d_pitch = Math.sin(abs_dyaw)*(abs_dpitch-init_dpitch);
+				//console.log(d_pitch);*/
+				if (global_pitch+d_pitch > max_pitch) d_pitch = max_pitch-global_pitch;
 				if (global_pitch+d_pitch < 0) d_pitch = -global_pitch;
 			}
 			
