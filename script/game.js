@@ -72,76 +72,26 @@ function main_function() {
 	the_ctx.mozImageSmoothingEnabled = false;
 	the_ctx.webkitImageSmoothingEnabled = false;
 	
-	//bad smelly testing shit
-	var global_yaw = Math.PI*.25;
-	var global_pitch = Math.PI*.3;
-	var max_pitch = Math.PI*.49;
-	
-	var d_yaw = 0;
-	var d_pitch = 0;
-	
-	//still smelly test shit
-	//hardcoding a level yeaaaaaa
-	var test_world = new World(9, 9);
-	test_world.cells[1][0] = "human";
-	test_world.cells[1][2] = "explosive";
-	test_world.cells[3][1] = "explosive";
-	test_world.cells[3][2] = "explosive";
-	test_world.cells[4][2] = "explosive";
-	test_world.cells[4][3] = "explosive";
-	test_world.cells[5][3] = "explosive";
-	test_world.cells[5][4] = "explosive";
-	test_world.cells[5][5] = "explosive";
-	
-	//TESTING CODE
-	function do_render(state, ms, canvas, ctx) {
-		ctx.fillStyle = "#FFFFFF";
-		ctx.fillRect(0, 0, canvas.width, canvas.height);
-		//ctx.fillStyle = "#000000";
-		//ctx.fillText("seconds: " + Math.floor(ms/10)/100, 0, 10);
-		
-		test_world.draw(ctx, canvas.width/2, canvas.height/2, 48, global_yaw+d_yaw, global_pitch+d_pitch);
-	}
+	var state_stack = [];
+	state_stack.push(new WorldState(9, 9, the_canvas));
 	
 	var loading = null;
 	var get_loadstatus = null;
 	
 	var last_timestamp = null;
 	function step(frame_begin) {
+		//clear framebuffer
+		the_ctx.fillStyle = "#FFFFFF";
+		the_ctx.fillRect(0, 0, the_canvas.width, the_canvas.height);
+		
 		if (loading == false) { //this is perverse but somehow it turns me on
 			if (last_timestamp == null) last_timestamp = frame_begin;
 			var state_time = window.performance.now()-last_timestamp;
 			
-			if (dragging_board) {
-				//global_pitch = 0;
-				var pitch_scale = Math.cos(global_pitch+d_pitch);
-				var abs_dyaw = Math.atan2((mouse_pos.y-the_canvas.height/2)/pitch_scale, mouse_pos.x-the_canvas.width/2);
-				d_yaw = abs_dyaw-Math.atan2((drag_pos.y-the_canvas.height/2)/pitch_scale, drag_pos.x-the_canvas.width/2);
-				/*var d_dist = 	Math.sqrt(	(mouse_pos.x-the_canvas.width/2)*
-											(mouse_pos.x-the_canvas.width/2) + 
-											(mouse_pos.y-the_canvas.height/2)*
-											(mouse_pos.y-the_canvas.height/2)) -
-								Math.sqrt(	(drag_pos.x-the_canvas.width/2)*
-											(drag_pos.x-the_canvas.width/2) + 
-											(drag_pos.y-the_canvas.height/2)*
-											(drag_pos.y-the_canvas.height/2));*/
-				/*var abs_dscale = Math.abs((mouse_pos.y-(the_canvas.height/2))/(test_world.h*48/2));
-				var init_dscale = Math.abs((drag_pos.y-(the_canvas.height/2))/(test_world.h*48/2));
-				var abs_dpitch = Math.acos(Math.min(1, abs_dscale));
-				var init_dpitch = Math.acos(Math.min(1, init_dscale));
-				d_pitch = Math.sin(abs_dyaw)*(abs_dpitch-init_dpitch);
-				//console.log(d_pitch);*/
-				if (global_pitch+d_pitch > max_pitch) d_pitch = max_pitch-global_pitch;
-				if (global_pitch+d_pitch < 0) d_pitch = -global_pitch;
-			}
-			
-			//this shit depends on world.js, remove (or modify) once we kill all the debug code
-			//test_loc = test_world.screen_to_world(mouse_pos, the_canvas.width/2, the_canvas.height/2, 48, global_yaw, global_pitch);
-			
 			//will need more complex logic here eventually, but for now all state happens instantly
-			test_world.advance_state();
+			state_stack[0].world.advance_state();
 			
-			do_render(null, state_time, the_canvas, the_ctx);
+			state_stack[state_stack.length-1].draw(the_canvas, the_ctx);
 		} else if (loading == null) {
 			loading = true;
 			get_loadstatus = load_sprites();
@@ -157,59 +107,39 @@ function main_function() {
 		window.requestAnimationFrame(step);
 	}
 	
-	var mouse_pos = {x: 0, y: 0};
-	var drag_pos = null;
-	var dragging_board = false;
 	the_canvas.onmousemove = function(e) {
-		if (e.layerX != undefined) {
-			mouse_pos = {x: e.layerX, y: e.layerY};
-		} else {
-			mouse_pos = {x: e.offsetX, y: e.offsetY};
+		if (e.layerX == undefined) {
+			e.layerX = e.offsetX;
+			e.layerY = e.offsetY;
 		}
+		state_stack[state_stack.length-1].onmousemove(e);
 	};
 	the_canvas.onmousedown = function(e) {
 		//e.button == 0 -> left mouse button
-		this.onmousemove(e);
-		if (e.button == 0) {
-			if (drag_pos != null) {
-				console.log("Something broke! (double drag init)");
-			}
-			drag_pos = {x: mouse_pos.x, y: mouse_pos.y}; //good god js is horrifying
-			
-			var world_loc = test_world.screen_to_world(mouse_pos, the_canvas.width/2, the_canvas.height/2, 48, global_yaw, global_pitch);
-			if (world_loc.x < 0 || world_loc.x > test_world.w ||
-				world_loc.y < 0 || world_loc.y > test_world.h) {
-				dragging_board = true;
-			}
+		if (e.layerX == undefined) {
+			e.layerX = e.offsetX;
+			e.layerY = e.offsetY;
 		}
+		state_stack[state_stack.length-1].onmousemove(e);
+		state_stack[state_stack.length-1].onmousedown(e);
 	};
 	the_canvas.onmouseup = function(e) {
-		this.onmousemove(e);
-		if (e.button == 0) {
-			if (drag_pos == null) {
-				//this is actually pretty normal
-				//console.log("Something broke! (double drag release)");
-			} else if (dragging_board == false) {
-				//moooore smelly testing code
-				test_world.handle_input(test_world.screen_to_world(drag_pos, the_canvas.width/2, the_canvas.height/2, 48, global_yaw, global_pitch),
-										test_world.screen_to_world(mouse_pos, the_canvas.width/2, the_canvas.height/2, 48, global_yaw, global_pitch));
-			} else {
-				global_yaw += d_yaw;
-				global_pitch += d_pitch;
-				while (global_yaw > Math.PI*2) global_yaw -= Math.PI*2;
-				while (global_yaw < 0) global_yaw += Math.PI*2;
-				d_yaw = 0;
-				d_pitch = 0;
-			}
-			
-			drag_pos = null;
-			dragging_board = false;
+		if (e.layerX == undefined) {
+			e.layerX = e.offsetX;
+			e.layerY = e.offsetY;
 		}
+		state_stack[state_stack.length-1].onmousemove(e);
+		state_stack[state_stack.length-1].onmouseup(e);
 	};
 	the_canvas.onmouseout = function(e) {
-		the_canvas.onmouseup(e);
+		if (e.layerX == undefined) {
+			e.layerX = e.offsetX;
+			e.layerY = e.offsetY;
+		}
+		state_stack[state_stack.length-1].onmousemove(e);
+		state_stack[state_stack.length-1].onmouseout(e);
 	};
 	window.requestAnimationFrame(step);
 };
 
-loadScripts(["script/debug.js", "script/sprite.js", "script/world.js"], main_function);
+if (document.getElementById("game_canvas").getContext != undefined) loadScripts(["script/debug.js", "script/sprite.js", "script/world.js", "script/state.js"], main_function);
