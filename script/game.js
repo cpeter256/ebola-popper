@@ -97,7 +97,9 @@ function main_function() {
 			var state_time = window.performance.now()-last_timestamp;
 			
 			//will need more complex logic here eventually, but for now all state happens instantly
-			if (stack_top().type == "world") stack_top().world.advance_state();
+			if (stack_top().type == "world") {
+				stack_top().world.advance_state();
+			}
 			
 			var bottom_state = state_stack.length-1;
 			while (bottom_state > 0 && state_stack[bottom_state].draw_children) bottom_state--;

@@ -3,7 +3,7 @@
 function WorldState(width, height, canvas, push_state, pop_state) {
 	State.apply(this, [push_state, pop_state]);
 	this.world = new World(width, height);
-	this.type = "game";
+	this.type = "world";
 	
 	this.view_yaw = Math.PI*.25;
 	this.view_pitch = Math.PI*.3;
