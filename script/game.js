@@ -72,11 +72,12 @@ function main_function() {
 	the_ctx.webkitImageSmoothingEnabled = false;
 	
 	var state_stack = [];
+	function stack_top() {return state_stack[state_stack.length-1];};
 	function push_state(state) {
 		state_stack.push(state);
 	};
 	function pop_state(state) {
-		if (state_stack[state_stack.length-1] === state) { //because encapsulation
+		if (stack_top() === state) { //because encapsulation
 			state_stack.pop();
 		}
 	};
@@ -89,14 +90,14 @@ function main_function() {
 	function step(frame_begin) {
 		//clear framebuffer
 		the_ctx.fillStyle = "#FFFFFF";
-		the_ctx.fillRect(0, 0, the_canvas.width, the_canvas.height);
+		the_ctx.clearRect(0, 0, the_canvas.width, the_canvas.height);
 		
 		if (loading == false) { //this is perverse but somehow it turns me on
 			if (last_timestamp == null) last_timestamp = frame_begin;
 			var state_time = window.performance.now()-last_timestamp;
 			
 			//will need more complex logic here eventually, but for now all state happens instantly
-			state_stack[0].world.advance_state();
+			if (stack_top().type == "world") stack_top().world.advance_state();
 			
 			var bottom_state = state_stack.length-1;
 			while (bottom_state > 0 && state_stack[bottom_state].draw_children) bottom_state--;
@@ -123,7 +124,7 @@ function main_function() {
 			e.layerX = e.offsetX;
 			e.layerY = e.offsetY;
 		}
-		state_stack[state_stack.length-1].onmousemove(e);
+		stack_top().onmousemove(e);
 	};
 	the_canvas.onmousedown = function(e) {
 		//e.button == 0 -> left mouse button
@@ -131,16 +132,16 @@ function main_function() {
 			e.layerX = e.offsetX;
 			e.layerY = e.offsetY;
 		}
-		state_stack[state_stack.length-1].onmousemove(e);
-		state_stack[state_stack.length-1].onmousedown(e);
+		stack_top().onmousemove(e);
+		stack_top().onmousedown(e);
 	};
 	the_canvas.onmouseup = function(e) {
 		if (e.layerX == undefined) {
 			e.layerX = e.offsetX;
 			e.layerY = e.offsetY;
 		}
-		state_stack[state_stack.length-1].onmousemove(e);
-		state_stack[state_stack.length-1].onmouseup(e);
+		stack_top().onmousemove(e);
+		stack_top().onmouseup(e);
 	};
 	
 	var mouse_in = false;
@@ -150,8 +151,8 @@ function main_function() {
 			e.layerX = e.offsetX;
 			e.layerY = e.offsetY;
 		}
-		state_stack[state_stack.length-1].onmousemove(e);
-		state_stack[state_stack.length-1].onmouseout(e);
+		stack_top().onmousemove(e);
+		stack_top().onmouseout(e);
 	};
 	the_canvas.onmouseover = function(e) {
 		mouse_in = true;
@@ -162,11 +163,14 @@ function main_function() {
 	window.addEventListener('keyup', function(e) {last_keycode = null;});
 	window.addEventListener('keydown', function(e) {
 		if (mouse_in && e.keyCode != last_keycode) {
-			state_stack[state_stack.length-1].onkeydown(e.key);
+			stack_top().onkeydown(e.key);
 		}
 		last_keycode = e.keyCode;
 	}, false);
 	window.requestAnimationFrame(step);
 };
 
-if (document.getElementById("game_canvas").getContext != undefined) loadScripts(["script/debug.js", "script/sprite.js", "script/world.js", "script/state.js"], main_function);
+if (document.getElementById("game_canvas").getContext != undefined)
+	loadScripts([	"script/debug.js", "script/sprite.js", "script/world.js",
+					"script/state.js", "script/worldstate.js", "script/pausestate.js",
+				], main_function);
