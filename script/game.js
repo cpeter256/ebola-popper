@@ -63,8 +63,7 @@ function draw_loadingbar(canvas, ctx, status) {
 }
 
 function main_function() {
-	//testing code, this crap better not be in our final build
-	//who am I kidding most of this will end up in it in some modified form
+	//this is no longer testing code
 	var the_canvas = document.getElementById("game_canvas");
 	var the_ctx = the_canvas.getContext("2d");
 	//OH GOD BROWSERS
@@ -73,7 +72,15 @@ function main_function() {
 	the_ctx.webkitImageSmoothingEnabled = false;
 	
 	var state_stack = [];
-	state_stack.push(new WorldState(9, 9, the_canvas));
+	function push_state(state) {
+		state_stack.push(state);
+	};
+	function pop_state(state) {
+		if (state_stack[state_stack.length-1] === state) { //because encapsulation
+			state_stack.pop();
+		}
+	};
+	state_stack.push(new WorldState(9, 9, the_canvas, push_state, pop_state));
 	
 	var loading = null;
 	var get_loadstatus = null;
@@ -91,7 +98,11 @@ function main_function() {
 			//will need more complex logic here eventually, but for now all state happens instantly
 			state_stack[0].world.advance_state();
 			
-			state_stack[state_stack.length-1].draw(the_canvas, the_ctx);
+			var bottom_state = state_stack.length-1;
+			while (bottom_state > 0 && state_stack[bottom_state].draw_children) bottom_state--;
+			for (var i = bottom_state; i < state_stack.length; i++) {
+				state_stack[i].draw(the_canvas, the_ctx);
+			}
 		} else if (loading == null) {
 			loading = true;
 			get_loadstatus = load_sprites();
@@ -131,7 +142,10 @@ function main_function() {
 		state_stack[state_stack.length-1].onmousemove(e);
 		state_stack[state_stack.length-1].onmouseup(e);
 	};
+	
+	var mouse_in = false;
 	the_canvas.onmouseout = function(e) {
+		mouse_in = false;
 		if (e.layerX == undefined) {
 			e.layerX = e.offsetX;
 			e.layerY = e.offsetY;
@@ -139,6 +153,19 @@ function main_function() {
 		state_stack[state_stack.length-1].onmousemove(e);
 		state_stack[state_stack.length-1].onmouseout(e);
 	};
+	the_canvas.onmouseover = function(e) {
+		mouse_in = true;
+	};
+	
+	//ugly key handling input. why oh why does js have to repeat keydown events???
+	var last_keycode = null;
+	window.addEventListener('keyup', function(e) {last_keycode = null;});
+	window.addEventListener('keydown', function(e) {
+		if (mouse_in && e.keyCode != last_keycode) {
+			state_stack[state_stack.length-1].onkeydown(e.key);
+		}
+		last_keycode = e.keyCode;
+	}, false);
 	window.requestAnimationFrame(step);
 };
 

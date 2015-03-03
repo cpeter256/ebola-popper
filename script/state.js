@@ -1,17 +1,20 @@
 "use strict";
 
-function State() {
+function State(push_state, pop_state) {
 	this.draw_children = true;
 	this.type = "abstract";
+	this.push_state = push_state;
+	this.pop_state = function() {pop_state(this);};
 };
 State.prototype.draw = function(canvas, ctx) {};
 State.prototype.onmousemove = function(e) {};
 State.prototype.onmousedown = function(e) {};
 State.prototype.onmouseup = function(e) {};
 State.prototype.onmouseout = function(e) {};
+State.prototype.onkeydown = function(key) {};
 
-function WorldState(width, height, canvas) {
-	State.apply(this, arguments);
+function WorldState(width, height, canvas, push_state, pop_state) {
+	State.apply(this, [push_state, pop_state]);
 	this.world = new World(width, height);
 	this.type = "game";
 	
@@ -101,4 +104,9 @@ WorldState.prototype.onmouseup = function(e) {
 };
 WorldState.prototype.onmouseout = function(e) {
 	this.onmouseup(e);
+};
+WorldState.prototype.onkeydown = function(key) {
+	if (key == "Esc" || key == "Escape") {
+		console.log("esc pressed!");
+	}
 };
