@@ -8,7 +8,7 @@ var World = function(width, height) {
 	for (var i = 0; i < width; i++) {
 		this.cells[i] = [];
 		for (var j = 0; j < height; j++) {
-			this.cells[i][j] = null; //elements are (as strings): wall, rock, human, infected, explosive
+			this.cells[i][j] = null; //elements are (as strings): wall, rock, void, human, infected, explosive
 		}
 	}
 };
@@ -50,7 +50,7 @@ World.prototype.handle_input = function(start, end) { //start, end = {x: num, y:
 		var actor = this.cells[cell_pos.x][cell_pos.y];
 		
 		//ignore if the actor is unmovable
-		if (actor == null || actor == "wall" || actor == "rock") return;
+		if (actor == null || actor == "wall" || actor == "rock" || actor == "void") return;
 		
 		//queue an action to move it to end (via left, right, up, down)
 		//make sure end is actually valid though
