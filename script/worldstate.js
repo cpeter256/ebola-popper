@@ -91,6 +91,7 @@ WorldState.prototype.onmouseup = function(e) {
 };
 WorldState.prototype.onkeydown = function(key) {
 	if (key == "Esc" || key == "Escape") {
+		this.onmouseout({button: 0});
 		this.push_state(new PauseState(this.push_state, this.pop_state_raw));
 	}
 };
