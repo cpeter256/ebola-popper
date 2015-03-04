@@ -201,7 +201,8 @@ World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch) { //x, y are
 				
 				if (do_trans) {
 					var prog = ["human", "infected", "explosive", "explosive"];
-					trans_target = prog[prog.indexOf(this.cells[i][j])];
+					if (this.cells[i][j] == "infected" || this.cells[i][j] == "explosive") 
+						trans_target = prog[prog.indexOf(this.cells[i][j])];
 				}
 			}
 			
@@ -215,16 +216,18 @@ World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch) { //x, y are
 			switch (this.cells[i][j]) {
 			case "human":
 				ctx.drawImage(sprites["Villager"], 0, 0, 40, 40, t_pos.x-20, t_pos.y-40, 40, 40);
+				if (trans_target != null) {
+					ctx.globalAlpha = time;
+					ctx.drawImage(sprites["Infected"], 0, 0, 40, 40, t_pos.x-20, t_pos.y-40, 40, 40);
+					ctx.globalAlpha = 1;
+				}
 				break;
 			case "infected":
+				ctx.drawImage(sprites["Infected"], 0, 0, 40, 40, t_pos.x-20, t_pos.y-40, 40, 40);
 				if (trans_target != null) {
-					ctx.globalAlpha = 1-time;
-					ctx.drawImage(sprites["Infected"], 0, 0, 40, 40, t_pos.x-20, t_pos.y-40, 40, 40);
 					ctx.globalAlpha = time;
 					ctx.drawImage(sprites["Explosive"], 0, 0, 40, 40, t_pos.x-20, t_pos.y-40, 40, 40);
 					ctx.globalAlpha = 1;
-				} else {
-					ctx.drawImage(sprites["Infected"], 0, 0, 40, 40, t_pos.x-20, t_pos.y-40, 40, 40);
 				}
 				break;
 			case "explosive":
