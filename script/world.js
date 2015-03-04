@@ -106,8 +106,8 @@ World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch) { //x, y are
 				ctx.moveTo(scale*(i-(this.w/2)), scale*(j-(this.h/2)));
 				ctx.lineTo(scale*(i+1-(this.w/2)), scale*(j+1-(this.h/2)));
 			}*/
-			ctx.moveTo(scale*(0-.5-(this.w/2)), scale*(0+.5-(this.h/2)));
-			ctx.lineTo(scale*(0+.5-(this.w/2)), scale*(0-.5-(this.h/2)));
+			//ctx.moveTo(scale*(0-.5-(this.w/2)), scale*(0+.5-(this.h/2)));
+			//ctx.lineTo(scale*(0+.5-(this.w/2)), scale*(0-.5-(this.h/2)));
 		}
 	}
 	ctx.stroke();
