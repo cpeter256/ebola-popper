@@ -5,6 +5,11 @@ function WorldState(width, height, canvas, push_state, pop_state) {
 	this.world = new World(width, height);
 	this.type = "world";
 	
+	this.move_max = 1000;	//ms
+	this.splode_max = 500;
+	this.state_time = 0;
+	this.state_max = null;
+	
 	this.view_yaw = Math.PI*.25;
 	this.view_pitch = Math.PI*.3;
 	this.max_pitch = Math.PI*.49;
@@ -15,6 +20,7 @@ function WorldState(width, height, canvas, push_state, pop_state) {
 	
 	this.mouse_pos = {x: 0, y: 0};
 	this.drag_pos = null;
+	this.valid_move = true;
 	this.dragging_board = false;
 	
 	this.d_yaw = 0;
@@ -35,7 +41,24 @@ function WorldState(width, height, canvas, push_state, pop_state) {
 WorldState.prototype = Object.create(State.prototype);
 WorldState.prototype.constructor = WorldState;
 WorldState.prototype.draw = function(canvas, ctx) {
-	this.world.draw(ctx, canvas.width/2, canvas.height/2, this.view_scale, this.view_yaw+this.d_yaw, this.view_pitch+this.d_pitch);
+	if (this.state_max == null && this.world.action_queue.length > 0) {
+		this.state_max = this.move_max;
+		if (this.world.action_queue[0].length > 0 &&
+			this.world.action_queue[0][0].action == "splosion") this.state_max = this.splode_max;
+	}
+	var state_percent = 0;
+	if (this.state_max != null) state_percent = this.state_time/this.state_max;
+	if (state_percent > 1) state_percent = 1;
+	this.world.draw(ctx, state_percent, canvas.width/2, canvas.height/2, this.view_scale, this.view_yaw+this.d_yaw, this.view_pitch+this.d_pitch);
+};
+WorldState.prototype.advance = function() {
+	this.world.advance_state();
+	this.state_max = null;
+	if (this.world.action_queue.length > 0) {
+		this.state_max = this.move_max;
+		if (this.world.action_queue[0].length > 0 &&
+			this.world.action_queue[0][0].action == "splosion") this.state_max = this.splode_max;
+	}
 };
 WorldState.prototype.onmousemove = function(e) {
 	this.mouse_pos.x = e.layerX;
@@ -65,6 +88,8 @@ WorldState.prototype.onmousedown = function(e) {
 		if (world_loc.x < 0 || world_loc.x > this.world.w ||
 			world_loc.y < 0 || world_loc.y > this.world.h) {
 			this.dragging_board = true;
+		} else {
+			this.valid_move = this.state_max == null;
 		}
 	}
 };
@@ -74,7 +99,8 @@ WorldState.prototype.onmouseup = function(e) {
 			//this is actually pretty normal
 			//console.log("Something broke! (double drag release)");
 		} else if (this.dragging_board == false) {
-			this.world.handle_input(this.world.screen_to_world(this.drag_pos, this.canvas_w/2, this.canvas_h/2, this.view_scale, this.view_yaw, this.view_pitch),
+			if (this.valid_move) this.world.handle_input(
+									this.world.screen_to_world(this.drag_pos, this.canvas_w/2, this.canvas_h/2, this.view_scale, this.view_yaw, this.view_pitch),
 									this.world.screen_to_world(this.mouse_pos, this.canvas_w/2, this.canvas_h/2, this.view_scale, this.view_yaw, this.view_pitch));
 		} else {
 			this.view_yaw += this.d_yaw;

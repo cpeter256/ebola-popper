@@ -77,7 +77,9 @@ World.prototype.handle_input = function(start, end) { //start, end = {x: num, y:
 		}
 	}
 };
-World.prototype.draw = function(ctx, x, y, scale, yaw, pitch) { //x, y are center, yaw, pitch are radians, 0 pitch = top-down
+World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch) { //x, y are center, yaw, pitch are radians, 0 pitch = top-down
+	ctx.fillStyle = "#000000";
+	ctx.fillText(time, 2, 9);
 	while (yaw > Math.PI*2) yaw -= Math.PI*2;
 	while (yaw < 0) yaw += Math.PI*2;
 	
@@ -155,13 +157,56 @@ World.prototype.draw = function(ctx, x, y, scale, yaw, pitch) { //x, y are cente
 		y_pred = function() {return cy < max_y;};
 		y_inc = function() {cy++;};
 	}
-	
+
+	var action_map = {};
+	if (this.action_queue.length > 0) {
+		for (var a in this.action_queue[0]) {
+			var action = this.action_queue[0][a];
+			//GHETTOEST SHIT EVER
+			action_map["" + action.x + " " + action.y] = action.action;
+		}
+	}
+
 	for (x_start(); x_pred(); x_inc()) {
 		for (y_start(); y_pred(); y_inc()) {
 			var i = cx;
 			var j = cy;
-			var t_pos = {	x: scale*(i+.5-(this.w/2)),
-							y: scale*(j+.5-(this.h/2))};
+			
+			var displacement = {x: 0, y: 0};
+			var trans_target = null;
+			if (action_map["" + i + " " + j]) { //OH GOD WHYYYY
+				var action = action_map["" + i + " " + j];
+				var do_trans = false;
+				
+				switch (action) {
+				case "left":
+					displacement.x = -time;
+					do_trans = true;
+					break;
+				case "right":
+					displacement.x = time;
+					do_trans = true;
+					break;
+				case "up":
+					displacement.y = -time;
+					do_trans = true;
+					break;
+				case "down":
+					displacement.y = time;
+					do_trans = true;
+					break;
+				default:
+					//do nothing
+				}
+				
+				if (do_trans) {
+					var prog = ["human", "infected", "explosive", "explosive"];
+					trans_target = prog[prog.indexOf(this.cells[i][j])];
+				}
+			}
+			
+			var t_pos = {	x: scale*(i+displacement.x+.5-(this.w/2)),
+							y: scale*(j+displacement.y+.5-(this.h/2))};
 			t_pos = {	x: t_pos.x*Math.cos(yaw)-t_pos.y*Math.sin(yaw),
 						y: t_pos.x*Math.sin(yaw)+t_pos.y*Math.cos(yaw)};
 			t_pos.y *= scale_amount;
@@ -172,7 +217,15 @@ World.prototype.draw = function(ctx, x, y, scale, yaw, pitch) { //x, y are cente
 				ctx.drawImage(sprites["Villager"], 0, 0, 40, 40, t_pos.x-20, t_pos.y-40, 40, 40);
 				break;
 			case "infected":
-				ctx.drawImage(sprites["Infected"], 0, 0, 40, 40, t_pos.x-20, t_pos.y-40, 40, 40);
+				if (trans_target != null) {
+					ctx.globalAlpha = 1-time;
+					ctx.drawImage(sprites["Infected"], 0, 0, 40, 40, t_pos.x-20, t_pos.y-40, 40, 40);
+					ctx.globalAlpha = time;
+					ctx.drawImage(sprites["Explosive"], 0, 0, 40, 40, t_pos.x-20, t_pos.y-40, 40, 40);
+					ctx.globalAlpha = 1;
+				} else {
+					ctx.drawImage(sprites["Infected"], 0, 0, 40, 40, t_pos.x-20, t_pos.y-40, 40, 40);
+				}
 				break;
 			case "explosive":
 				ctx.drawImage(sprites["Explosive"], 0, 0, 40, 40, t_pos.x-20, t_pos.y-40, 40, 40);

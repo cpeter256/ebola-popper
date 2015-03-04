@@ -94,11 +94,20 @@ function main_function() {
 		
 		if (loading == false) { //this is perverse but somehow it turns me on
 			if (last_timestamp == null) last_timestamp = frame_begin;
-			var state_time = window.performance.now()-last_timestamp;
 			
-			//will need more complex logic here eventually, but for now all state happens instantly
-			if (stack_top().type == "world") {
-				stack_top().world.advance_state();
+			if (stack_top().type != "world") {
+				last_timestamp = frame_begin-stack_top().state_time;
+			} else if (stack_top().world.action_queue.length == 0) {
+				last_timestamp = frame_begin;
+			} else if (stack_top().state_max == null) { //idle
+				stack_top().state_time = 0;
+			} else if (stack_top().state_time >= stack_top().state_max) { //ready to advance
+				stack_top().state_time = 0;
+				stack_top().advance();
+				last_timestamp = frame_begin;
+			} else { //transitioning
+				stack_top().valid_move = false;
+				stack_top().state_time = window.performance.now()-last_timestamp;
 			}
 			
 			var bottom_state = state_stack.length-1;
