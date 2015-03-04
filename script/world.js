@@ -106,8 +106,8 @@ World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch) { //x, y are
 				ctx.moveTo(scale*(i-(this.w/2)), scale*(j-(this.h/2)));
 				ctx.lineTo(scale*(i+1-(this.w/2)), scale*(j+1-(this.h/2)));
 			}*/
-			//ctx.moveTo(scale*(test_loc.x-.5-(this.w/2)), scale*(test_loc.y+.5-(this.h/2)));
-			//ctx.lineTo(scale*(test_loc.x+.5-(this.w/2)), scale*(test_loc.y-.5-(this.h/2)));
+			ctx.moveTo(scale*(0-.5-(this.w/2)), scale*(0+.5-(this.h/2)));
+			ctx.lineTo(scale*(0+.5-(this.w/2)), scale*(0-.5-(this.h/2)));
 		}
 	}
 	ctx.stroke();
@@ -115,8 +115,8 @@ World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch) { //x, y are
 	
 	
 	//Reeks of smell, beware!
-	var cx;
-	var cy;
+	var cx = 0;
+	var cy = 0;
 	
 	var x_start;
 	var x_pred;
@@ -128,36 +128,71 @@ World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch) { //x, y are
 	var max_x = this.w;
 	var max_y = this.h;
 	
-	if (yaw >= 0 && yaw < Math.PI/2) {
+	if (yaw < Math.PI/4) {
+		x_start = function() {cy = 0;};
+		x_pred = function() {return cy < max_y;};
+		x_inc = function() {cy++;};
+		y_start = function() {cx = 0;};
+		y_pred = function() {return cx < max_x;};
+		y_inc = function() {cx++;};
+	} else if (yaw < 2*Math.PI/4) {
 		x_start = function() {cx = 0;};
 		x_pred = function() {return cx < max_x;};
 		x_inc = function() {cx++;};
 		y_start = function() {cy = 0;};
 		y_pred = function() {return cy < max_y;};
 		y_inc = function() {cy++;};
-	} else if (yaw >= Math.PI/2 && yaw < Math.PI) {
+	} else if (yaw < 3*Math.PI/4) {
 		x_start = function() {cx = 0;};
 		x_pred = function() {return cx < max_x;};
 		x_inc = function() {cx++;};
 		y_start = function() {cy = max_y-1;};
 		y_pred = function() {return cy >= 0;};
 		y_inc = function() {cy--;};
-	} else if (yaw >= Math.PI && yaw < 3*Math.PI/2) {
+	} else if (yaw < 4*Math.PI/4) {
+		x_start = function() {cy = max_y-1;};
+		x_pred = function() {return cy >= 0;};
+		x_inc = function() {cy--;};
+		y_start = function() {cx = 0;};
+		y_pred = function() {return cx < max_x;};
+		y_inc = function() {cx++;};
+	} else if (yaw < 5*Math.PI/4) {
+		x_start = function() {cy = max_y-1;};
+		x_pred = function() {return cy >= 0;};
+		x_inc = function() {cy--;};
+		y_start = function() {cx = max_x-1;};
+		y_pred = function() {return cx >= 0;};
+		y_inc = function() {cx--;};
+	} else if (yaw < 6*Math.PI/4) {
 		x_start = function() {cx = max_x-1;};
 		x_pred = function() {return cx >= 0;};
 		x_inc = function() {cx--;};
 		y_start = function() {cy = max_y-1;};
 		y_pred = function() {return cy >= 0;};
 		y_inc = function() {cy--;};
-	} else {
+	} else if (yaw < 7*Math.PI/4) {
 		x_start = function() {cx = max_x-1;};
 		x_pred = function() {return cx >= 0;};
 		x_inc = function() {cx--;};
 		y_start = function() {cy = 0;};
 		y_pred = function() {return cy < max_y;};
 		y_inc = function() {cy++;};
+	} else if (yaw < 8*Math.PI/4) {
+		x_start = function() {cy = 0;};
+		x_pred = function() {return cy < max_y;};
+		x_inc = function() {cy++;};
+		y_start = function() {cx = max_x-1;};
+		y_pred = function() {return cx >= 0;};
+		y_inc = function() {cx--;};
+	} else {	
+		console.log("Something terrible has ocurred!");
+		x_start = function() {};
+		x_pred = function() {};
+		x_inc = function() {};
+		y_start = function() {};
+		y_inc = function() {};
+		y_pred = function() {};
 	}
-
 	var action_map = {};
 	if (this.action_queue.length > 0) {
 		for (var a in this.action_queue[0]) {
@@ -167,6 +202,7 @@ World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch) { //x, y are
 		}
 	}
 
+	//TODO: fix render order
 	for (x_start(); x_pred(); x_inc()) {
 		for (y_start(); y_pred(); y_inc()) {
 			var i = cx;
