@@ -202,7 +202,6 @@ World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch) { //x, y are
 		}
 	}
 
-	//TODO: fix render order
 	for (x_start(); x_pred(); x_inc()) {
 		for (y_start(); y_pred(); y_inc()) {
 			var i = cx;
