@@ -10,7 +10,7 @@ function WorldState(width, height, canvas, push_state, pop_state) {
 	this.state_time = 0;
 	this.state_max = null;
 	
-	this.view_yaw = Math.PI*.25;
+	this.view_yaw = Math.PI*.15;
 	this.view_pitch = Math.PI*.3;
 	this.max_pitch = Math.PI*.49;
 	this.view_scale = 48;
