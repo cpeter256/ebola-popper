@@ -51,7 +51,7 @@ WorldState.prototype.draw = function(canvas, ctx) {
 	if (state_percent > 1) state_percent = 1;
 	
 	var cursor_to = null;
-	if (!this.dragging_board) cursor_to = this.world.screen_to_world(
+	if (!this.dragging_board && this.state_max == null) cursor_to = this.world.screen_to_world(
 													this.mouse_pos, this.canvas_w/2, this.canvas_h/2, this.view_scale, this.view_yaw, this.view_pitch);
 													
 	this.world.draw(ctx, state_percent, canvas.width/2, canvas.height/2, this.view_scale, this.view_yaw+this.d_yaw, this.view_pitch+this.d_pitch, cursor_to, null);

@@ -199,6 +199,17 @@ World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch, cursor_to, c
 		}
 	}
 
+	var selector_height = 4;
+	var selector_color = "#FF0000";
+	if (cursor_to != null) {
+		var w_x = Math.floor(cursor_to.x);
+		var w_y = Math.floor(cursor_to.y);
+		if (w_x >= 0 && w_x < this.w && w_y >= 0 && w_y < this.h &&
+			(this.cells[w_x][w_y] == "human" || this.cells[w_x][w_y] == "infected" || this.cells[w_x][w_y] == "explosive")) {
+			selector_color = "#00FF00";
+		}
+	}
+
 	for (x_start(); x_pred(); x_inc()) {
 		for (y_start(); y_pred(); y_inc()) {
 			var i = cx;
@@ -238,7 +249,6 @@ World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch, cursor_to, c
 				}
 			}
 			
-			var selector_height = 4;
 			if (cursor_to != null && Math.floor(cursor_to.x) == i && Math.floor(cursor_to.y) == j) {
 				ctx.save();
 				ctx.translate(x, y-selector_height);
@@ -250,7 +260,7 @@ World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch, cursor_to, c
 				
 				ctx.translate(-scale*this.w/2, -scale*this.h/2);
 				
-				ctx.strokeStyle = "#00FF00";
+				ctx.strokeStyle = selector_color;
 				ctx.beginPath();
 				
 				if (yaw < Math.PI/2) {
@@ -332,7 +342,7 @@ World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch, cursor_to, c
 				
 				ctx.translate(-scale*this.w/2, -scale*this.h/2);
 				
-				ctx.strokeStyle = "#00FF00";
+				ctx.strokeStyle = selector_color;
 				ctx.beginPath();
 				
 				if (yaw < Math.PI/2) {
