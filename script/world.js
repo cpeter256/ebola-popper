@@ -235,6 +235,8 @@ World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch, cursor_to, c
 			
 			var displacement = {x: 0, y: 0};
 			var y_off = 0;
+			var x_off = 40;
+			var cycles_per_state = 2;
 			var trans_target = null;
 			if (action_map["" + i + " " + j]) { //OH GOD WHYYYY
 				var action = action_map["" + i + " " + j];
@@ -245,20 +247,32 @@ World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch, cursor_to, c
 					displacement.x = -time;
 					do_trans = true;
 					y_off = 120;
+					x_off = Math.floor(time*4*cycles_per_state)%4;
+					if (x_off == 3) x_off = 1;
+					x_off *= 40;
 					break;
 				case "right":
 					displacement.x = time;
 					do_trans = true;
 					y_off = 40;
+					x_off = Math.floor(time*4*cycles_per_state)%4;
+					if (x_off == 3) x_off = 1;
+					x_off *= 40;
 					break;
 				case "up":
 					displacement.y = -time;
 					do_trans = true;
 					y_off = 80;
+					x_off = Math.floor(time*4*cycles_per_state)%4;
+					if (x_off == 3) x_off = 1;
+					x_off *= 40;
 					break;
 				case "down":
 					displacement.y = time;
 					do_trans = true;
+					x_off = Math.floor(time*4*cycles_per_state)%4;
+					if (x_off == 3) x_off = 1;
+					x_off *= 40;
 					break;
 				default:
 					//do nothing
@@ -362,23 +376,23 @@ World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch, cursor_to, c
 			
 			switch (this.cells[i][j]) {
 			case "human":
-				ctx.drawImage(sprites["Villager"], 0, 2+y_off, 40, 38, t_pos.x-20, t_pos.y-38, 40, 38);
+				ctx.drawImage(sprites["Villager"], x_off, 2+y_off, 40, 38, t_pos.x-20, t_pos.y-38, 40, 38);
 				if (trans_target != null) {
 					ctx.globalAlpha = time;
-					ctx.drawImage(sprites["Infected"], 0, 2+y_off, 40, 38, t_pos.x-20, t_pos.y-38, 40, 38);
+					ctx.drawImage(sprites["Infected"], x_off, 2+y_off, 40, 38, t_pos.x-20, t_pos.y-38, 40, 38);
 					ctx.globalAlpha = 1;
 				}
 				break;
 			case "infected":
-				ctx.drawImage(sprites["Infected"], 0, 2+y_off, 40, 38, t_pos.x-20, t_pos.y-38, 40, 38);
+				ctx.drawImage(sprites["Infected"], x_off, 2+y_off, 40, 38, t_pos.x-20, t_pos.y-38, 40, 38);
 				if (trans_target != null) {
 					ctx.globalAlpha = time;
-					ctx.drawImage(sprites["Explosive"], 0, 2+y_off, 40, 38, t_pos.x-20, t_pos.y-38, 40, 38);
+					ctx.drawImage(sprites["Explosive"], x_off, 2+y_off, 40, 38, t_pos.x-20, t_pos.y-38, 40, 38);
 					ctx.globalAlpha = 1;
 				}
 				break;
 			case "explosive":
-				ctx.drawImage(sprites["Explosive"], 0, 2+y_off, 40, 38, t_pos.x-20, t_pos.y-38, 40, 38);
+				ctx.drawImage(sprites["Explosive"], x_off, 2+y_off, 40, 38, t_pos.x-20, t_pos.y-38, 40, 38);
 				break;
 			case null:
 				break;
