@@ -96,7 +96,15 @@ function main_function() {
 			if (last_timestamp == null) last_timestamp = frame_begin;
 			
 			if (stack_top().type != "world") {
-				last_timestamp = frame_begin-stack_top().state_time;
+				var w_id = 0;
+				while (state_stack[w_id].type != "world") {
+					w_id++;
+					if (w_id > state_stack.length) {
+						console.log("something terrible happened");
+						break;
+					}
+				}
+				last_timestamp = frame_begin-state_stack[w_id].state_time;
 			} else if (stack_top().world.action_queue.length == 0) {
 				last_timestamp = frame_begin;
 			} else if (stack_top().state_max == null) { //idle
