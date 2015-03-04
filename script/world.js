@@ -20,9 +20,6 @@ World.prototype.push_action_back = function(action) {
 	this.action_queue[this.action_queue.length-1].push(action);
 };
 
-//THIS SHIT NEEDS TO GO BEFORE RELEASE
-//var test_loc = {x: 0, y: 0};
-
 World.prototype.screen_to_world = function(mouse, x, y, scale, yaw, pitch) { //mouse = {x: num, y: num}
 	var result = {x: mouse.x, y: mouse.y};
 	result.x -= x;
@@ -77,7 +74,7 @@ World.prototype.handle_input = function(start, end) { //start, end = {x: num, y:
 		}
 	}
 };
-World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch) { //x, y are center, yaw, pitch are radians, 0 pitch = top-down
+World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch, cursor_to, cursor_init) { //x, y are center, yaw, pitch are radians, 0 pitch = top-down
 	ctx.fillStyle = "#000000";
 	ctx.fillText(time, 2, 9);
 	while (yaw > Math.PI*2) yaw -= Math.PI*2;
@@ -241,6 +238,43 @@ World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch) { //x, y are
 				}
 			}
 			
+			var selector_height = 4;
+			if (cursor_to != null && Math.floor(cursor_to.x) == i && Math.floor(cursor_to.y) == j) {
+				ctx.save();
+				ctx.translate(x, y-selector_height);
+				
+				//var scale_amount = Math.cos(pitch);
+				ctx.scale(1, scale_amount);
+				
+				ctx.rotate(yaw);
+				
+				ctx.translate(-scale*this.w/2, -scale*this.h/2);
+				
+				ctx.strokeStyle = "#00FF00";
+				ctx.beginPath();
+				
+				if (yaw < Math.PI/2) {
+					ctx.moveTo(i*scale, (j+1)*scale);
+					ctx.lineTo(i*scale, j*scale);
+					ctx.lineTo((i+1)*scale, j*scale);
+				} else if (yaw < 2*Math.PI/2) {
+					ctx.moveTo(i*scale, j*scale);
+					ctx.lineTo(i*scale, (j+1)*scale);
+					ctx.lineTo((i+1)*scale, (j+1)*scale);
+				} else if (yaw < 3*Math.PI/2) {
+					ctx.moveTo(i*scale, (j+1)*scale);
+					ctx.lineTo((i+1)*scale, (j+1)*scale);
+					ctx.lineTo((i+1)*scale, j*scale);
+				} else if (yaw < 4*Math.PI/2) {
+					ctx.moveTo((i+1)*scale, (j+1)*scale);
+					ctx.lineTo((i+1)*scale, j*scale);
+					ctx.lineTo(i*scale, j*scale);
+				}
+			
+				ctx.stroke();
+				ctx.restore();
+			}
+			
 			var t_pos = {	x: scale*(i+displacement.x+.5-(this.w/2)),
 							y: scale*(j+displacement.y+.5-(this.h/2))};
 			t_pos = {	x: t_pos.x*Math.cos(yaw)-t_pos.y*Math.sin(yaw),
@@ -285,6 +319,42 @@ World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch) { //x, y are
 				ctx.lineTo(t_pos.x-scale*.25, t_pos.y);
 				
 				ctx.stroke();
+			}
+			
+			if (cursor_to != null && Math.floor(cursor_to.x) == i && Math.floor(cursor_to.y) == j) {
+				ctx.save();
+				ctx.translate(x, y-selector_height);
+				
+				//var scale_amount = Math.cos(pitch);
+				ctx.scale(1, scale_amount);
+				
+				ctx.rotate(yaw);
+				
+				ctx.translate(-scale*this.w/2, -scale*this.h/2);
+				
+				ctx.strokeStyle = "#00FF00";
+				ctx.beginPath();
+				
+				if (yaw < Math.PI/2) {
+					ctx.moveTo(i*scale, (j+1)*scale);
+					ctx.lineTo((i+1)*scale, (j+1)*scale);
+					ctx.lineTo((i+1)*scale, j*scale);
+				} else if (yaw < 2*Math.PI/2) {
+					ctx.moveTo(i*scale, j*scale);
+					ctx.lineTo((i+1)*scale, j*scale);
+					ctx.lineTo((i+1)*scale, (j+1)*scale);
+				} else if (yaw < 3*Math.PI/2) {
+					ctx.moveTo(i*scale, (j+1)*scale);
+					ctx.lineTo(i*scale, j*scale);
+					ctx.lineTo((i+1)*scale, j*scale);
+				} else if (yaw < 4*Math.PI/2) {
+					ctx.moveTo((i+1)*scale, (j+1)*scale);
+					ctx.lineTo(i*scale, (j+1)*scale);
+					ctx.lineTo(i*scale, j*scale);
+				}
+			
+				ctx.stroke();
+				ctx.restore();
 			}
 		}
 	}

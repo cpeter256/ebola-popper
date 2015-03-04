@@ -49,7 +49,12 @@ WorldState.prototype.draw = function(canvas, ctx) {
 	var state_percent = 0;
 	if (this.state_max != null) state_percent = this.state_time/this.state_max;
 	if (state_percent > 1) state_percent = 1;
-	this.world.draw(ctx, state_percent, canvas.width/2, canvas.height/2, this.view_scale, this.view_yaw+this.d_yaw, this.view_pitch+this.d_pitch);
+	
+	var cursor_to = null;
+	if (!this.dragging_board) cursor_to = this.world.screen_to_world(
+													this.mouse_pos, this.canvas_w/2, this.canvas_h/2, this.view_scale, this.view_yaw, this.view_pitch);
+													
+	this.world.draw(ctx, state_percent, canvas.width/2, canvas.height/2, this.view_scale, this.view_yaw+this.d_yaw, this.view_pitch+this.d_pitch, cursor_to, null);
 };
 WorldState.prototype.advance = function() {
 	this.world.advance_state();
