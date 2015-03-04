@@ -201,12 +201,30 @@ World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch, cursor_to, c
 
 	var selector_height = 4;
 	var selector_color = "#FF0000";
+	var init_color = "#0000FF";
 	if (cursor_to != null) {
 		var w_x = Math.floor(cursor_to.x);
 		var w_y = Math.floor(cursor_to.y);
-		if (w_x >= 0 && w_x < this.w && w_y >= 0 && w_y < this.h &&
-			(this.cells[w_x][w_y] == "human" || this.cells[w_x][w_y] == "infected" || this.cells[w_x][w_y] == "explosive")) {
-			selector_color = "#00FF00";
+		if (w_x >= 0 && w_x < this.w && w_y >= 0 && w_y < this.h) {
+			if (cursor_init != null) {
+				var dr_x = Math.floor(cursor_init.x);
+				var dr_y = Math.floor(cursor_init.y);
+				if (dr_x == w_x && dr_y == w_y) cursor_init = null;
+				//console.log(cursor_init);
+				if (this.cells[dr_x][dr_y] == "human" || this.cells[dr_x][dr_y] == "infected" || this.cells[dr_x][dr_y] == "explosive") {
+					var dx = Math.abs(w_x-dr_x);
+					var dy = Math.abs(w_y-dr_y);
+					//console.log(dx+dy);
+					if (dx+dy == 0 || (!(this.cells[w_x][w_y] == "human" || this.cells[w_x][w_y] == "infected" || this.cells[w_x][w_y] == "explosive") &&
+						dx+dy == 1)) {
+						selector_color = "#00FF00";		
+					}
+				} else {
+					cursor_init = null;
+				}
+			} else if (this.cells[w_x][w_y] == "human" || this.cells[w_x][w_y] == "infected" || this.cells[w_x][w_y] == "explosive") {
+				selector_color = "#00FF00";
+			}
 		}
 	}
 
@@ -249,6 +267,41 @@ World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch, cursor_to, c
 				}
 			}
 			
+			if (cursor_init != null && Math.floor(cursor_init.x) == i && Math.floor(cursor_init.y) == j) {
+				ctx.save();
+				ctx.translate(x, y-selector_height);
+				
+				//var scale_amount = Math.cos(pitch);
+				ctx.scale(1, scale_amount);
+				
+				ctx.rotate(yaw);
+				
+				ctx.translate(-scale*this.w/2, -scale*this.h/2);
+				
+				ctx.strokeStyle = init_color;
+				ctx.beginPath();
+				
+				if (yaw < Math.PI/2) {
+					ctx.moveTo(i*scale, (j+1)*scale);
+					ctx.lineTo(i*scale, j*scale);
+					ctx.lineTo((i+1)*scale, j*scale);
+				} else if (yaw < 2*Math.PI/2) {
+					ctx.moveTo(i*scale, j*scale);
+					ctx.lineTo(i*scale, (j+1)*scale);
+					ctx.lineTo((i+1)*scale, (j+1)*scale);
+				} else if (yaw < 3*Math.PI/2) {
+					ctx.moveTo(i*scale, (j+1)*scale);
+					ctx.lineTo((i+1)*scale, (j+1)*scale);
+					ctx.lineTo((i+1)*scale, j*scale);
+				} else if (yaw < 4*Math.PI/2) {
+					ctx.moveTo((i+1)*scale, (j+1)*scale);
+					ctx.lineTo((i+1)*scale, j*scale);
+					ctx.lineTo(i*scale, j*scale);
+				}
+			
+				ctx.stroke();
+				ctx.restore();
+			}
 			if (cursor_to != null && Math.floor(cursor_to.x) == i && Math.floor(cursor_to.y) == j) {
 				ctx.save();
 				ctx.translate(x, y-selector_height);
@@ -343,6 +396,41 @@ World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch, cursor_to, c
 				ctx.translate(-scale*this.w/2, -scale*this.h/2);
 				
 				ctx.strokeStyle = selector_color;
+				ctx.beginPath();
+				
+				if (yaw < Math.PI/2) {
+					ctx.moveTo(i*scale, (j+1)*scale);
+					ctx.lineTo((i+1)*scale, (j+1)*scale);
+					ctx.lineTo((i+1)*scale, j*scale);
+				} else if (yaw < 2*Math.PI/2) {
+					ctx.moveTo(i*scale, j*scale);
+					ctx.lineTo((i+1)*scale, j*scale);
+					ctx.lineTo((i+1)*scale, (j+1)*scale);
+				} else if (yaw < 3*Math.PI/2) {
+					ctx.moveTo(i*scale, (j+1)*scale);
+					ctx.lineTo(i*scale, j*scale);
+					ctx.lineTo((i+1)*scale, j*scale);
+				} else if (yaw < 4*Math.PI/2) {
+					ctx.moveTo((i+1)*scale, (j+1)*scale);
+					ctx.lineTo(i*scale, (j+1)*scale);
+					ctx.lineTo(i*scale, j*scale);
+				}
+			
+				ctx.stroke();
+				ctx.restore();
+			}
+			if (cursor_init != null && Math.floor(cursor_init.x) == i && Math.floor(cursor_init.y) == j) {
+				ctx.save();
+				ctx.translate(x, y-selector_height);
+				
+				//var scale_amount = Math.cos(pitch);
+				ctx.scale(1, scale_amount);
+				
+				ctx.rotate(yaw);
+				
+				ctx.translate(-scale*this.w/2, -scale*this.h/2);
+				
+				ctx.strokeStyle = init_color;
 				ctx.beginPath();
 				
 				if (yaw < Math.PI/2) {
