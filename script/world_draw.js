@@ -424,6 +424,10 @@ World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch, cursor_to, c
 			case "explosive":
 				ctx.drawImage(sprites["Explosive"], x_off, 2+y_off, 40, 38, t_pos.x-20, t_pos.y-38, 40, 38);
 				break;
+			case "rock": {
+				ctx.drawImage(sprites["Rock"], 0, 0, 40, 40, t_pos.x-20, t_pos.y-35, 40, 40);
+			}
+			case "void":
 			case null:
 				break;
 			default:

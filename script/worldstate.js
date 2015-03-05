@@ -37,6 +37,9 @@ function WorldState(width, height, canvas, push_state, pop_state) {
 	this.world.cells[5][3] = "explosive";
 	this.world.cells[5][4] = "explosive";
 	this.world.cells[5][5] = "explosive";
+	
+	this.world.cells[5][6] = "void";
+	this.world.cells[6][5] = "rock";
 }
 WorldState.prototype = Object.create(State.prototype);
 WorldState.prototype.constructor = WorldState;
