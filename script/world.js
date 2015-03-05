@@ -5,10 +5,13 @@ var World = function(width, height) {
 	this.h = height;
 	this.action_queue = []; //elements are arrays of actions to be executed simultaneously
 	this.cells = [];
+	this.dirt_ids = [];
 	for (var i = 0; i < width; i++) {
 		this.cells[i] = [];
+		this.dirt_ids[i] = [];
 		for (var j = 0; j < height; j++) {
 			this.cells[i][j] = null; //elements are (as strings): wall, rock, void, human, infected, explosive
+			this.dirt_ids[i][j] = Math.floor(Math.random()*4);
 		}
 	}
 };
@@ -93,13 +96,18 @@ World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch, cursor_to, c
 	ctx.rotate(yaw);
 	
 	ctx.beginPath();
-	for (var i = 0; i <= this.w; i++) {
-		for (var j = 0; j <= this.h; j++) {
+	for (var i = 0; i < this.w; i++) {
+		for (var j = 0; j < this.h; j++) {
 			//testing crap
-			ctx.moveTo(scale*(i-(this.w/2)), scale*(j-(this.h/2)));
+			//console.log(this.dirt_ids[i]);
+			if (this.tiles[i][j] != "void") {
+				var dirt_tile = sprites["dirt" + (this.dirt_ids[i][j] + 1)];
+				ctx.drawImage(dirt_tile, 0, 0, 48, 48, scale*(i-(this.w/2)), scale*(j-(this.h/2)), 48, 48);
+			}
+			/*ctx.moveTo(scale*(i-(this.w/2)), scale*(j-(this.h/2)));
 			if (i != this.w) ctx.lineTo(scale*(i+1-(this.w/2)), scale*(j-(this.h/2)));
 			ctx.moveTo(scale*(i-(this.w/2)), scale*(j-(this.h/2)));
-			if (j != this.h) ctx.lineTo(scale*(i-(this.w/2)), scale*(j+1-(this.h/2)));
+			if (j != this.h) ctx.lineTo(scale*(i-(this.w/2)), scale*(j+1-(this.h/2)));*/
 			
 			/*if (i != this.w && j != this.h && i == Math.floor(test_loc.x) && j == Math.floor(test_loc.y)) {
 				ctx.moveTo(scale*(i-(this.w/2)), scale*(j-(this.h/2)));
