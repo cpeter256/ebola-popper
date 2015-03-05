@@ -170,8 +170,7 @@ World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch, cursor_to, c
 					var dx = Math.abs(w_x-dr_x);
 					var dy = Math.abs(w_y-dr_y);
 					//console.log(dx+dy);
-					if (dx+dy == 0 || (!(this.cells[w_x][w_y] == "human" || this.cells[w_x][w_y] == "infected" || this.cells[w_x][w_y] == "explosive") &&
-						dx+dy == 1)) {
+					if (dx+dy == 0 || (this.cells[w_x][w_y] == null && dx+dy == 1)) {
 						selector_color = "#00FF00";		
 					}
 				} else {
