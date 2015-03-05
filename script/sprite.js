@@ -4,7 +4,7 @@
 var sprites = {	"Villager": null,
 				"Infected": null,
 				"Explosive": null,
-				"Ridiculous_hires_CGDirt_seriously_this_is_just_silly": null,
+				"blob": null,
 			};
 
 //Call this and all the sprites will load eventually
