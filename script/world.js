@@ -74,6 +74,8 @@ World.prototype.handle_input = function(start, end) { //start, end = {x: num, y:
 		}
 	}
 };
+
+//HERE BE DRAGONS
 World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch, cursor_to, cursor_init) { //x, y are center, yaw, pitch are radians, 0 pitch = top-down
 	ctx.fillStyle = "#000000";
 	ctx.fillText(time, 2, 9);
@@ -181,7 +183,25 @@ World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch, cursor_to, c
 		y_start = function() {cx = max_x-1;};
 		y_pred = function() {return cx >= 0;};
 		y_inc = function() {cx--;};
-	} else {	
+	} else {
+		//	
+        //             .     _///_,
+        //           .      / ` ' '>
+        //             )   o'  __/_'>
+        //            (   /  _/  )_\'>
+        //             ' "__/   /_/\_>
+        //                 ____/_/_/_/
+        //                /,---, _/ /
+        //               ""  /_/_/_/
+        //                  /_(_(_(_                 \
+        //                 (   \_\_\\_               )\
+        //                  \'__\_\_\_\__            ).\
+        //                  //____|___\__)           )_/
+        //                  |  _  \'___'_(           /'
+        //                   \_ (-'\'___'_\      __,'_'
+        //                   __) \  \\___(_   __/.__,'
+        //                ,((,-,__\  '", __\_/. __,'
+        //                             '"./_._._-'
 		console.log("Something terrible has ocurred!");
 		x_start = function() {};
 		x_pred = function() {};
