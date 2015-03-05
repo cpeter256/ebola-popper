@@ -180,6 +180,10 @@ World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch, cursor_to, c
 			} else if (this.cells[w_x][w_y] == "human" || this.cells[w_x][w_y] == "infected" || this.cells[w_x][w_y] == "explosive") {
 				selector_color = "#00FF00";
 			}
+		} else if (cursor_init != null) {
+			var dr_x = Math.floor(cursor_init.x);
+			var dr_y = Math.floor(cursor_init.y);
+			if (!(this.cells[dr_x][dr_y] == "human" || this.cells[dr_x][dr_y] == "infected" || this.cells[dr_x][dr_y] == "explosive")) cursor_init = null;
 		}
 	}
 
