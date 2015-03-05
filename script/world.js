@@ -1,17 +1,75 @@
 "use strict";
 
-var World = function(width, height) {
-	this.w = width;
-	this.h = height;
-	this.action_queue = []; //elements are arrays of actions to be executed simultaneously
-	this.cells = [];
-	this.dirt_ids = [];
-	for (var i = 0; i < width; i++) {
-		this.cells[i] = [];
-		this.dirt_ids[i] = [];
-		for (var j = 0; j < height; j++) {
-			this.cells[i][j] = null; //elements are (as strings): wall, rock, void, human, infected, explosive
-			this.dirt_ids[i][j] = Math.floor(Math.random()*4);
+var World = function(width_or_name, height) {
+	if (height == undefined) {
+		var name = width_or_name;
+		var level_string = levels[name];
+		
+		this.h = 0;
+		var pos = level_string.indexOf('\n');
+		this.w = pos+2;
+		while (pos != -1) {
+			this.h++;
+			pos = level_string.indexOf('\n', pos+1);
+		}
+		this.h += 2;
+		
+		this.action_queue = []; //elements are arrays of actions to be executed simultaneously
+		this.cells = [];
+		this.dirt_ids = [];
+		for (var i = 0; i < this.w; i++) {
+			this.cells[i] = [];
+			this.dirt_ids[i] = [];
+			for (var j = 0; j < this.h; j++) {
+				this.cells[i][j] = "void"; //elements are (as strings): wall, rock, void, human, infected, explosive
+				this.dirt_ids[i][j] = Math.floor(Math.random()*4);
+			}
+		}
+		pos = 0;
+		for (var y = 1; y < this.h-1; y++) {
+			for (var x = 1; x < this.w-1; x++) {
+				switch (level_string.charAt(pos)) {
+				case 'v':
+					this.cells[x][y] = "human";
+					break;
+				case 'i':
+					this.cells[x][y] = "infected";
+					break;
+				case 'e':
+					this.cells[x][y] = "explosive";
+					break;
+				case 'r':
+					this.cells[x][y] = "rock";
+					break;
+				case 'b':
+					this.cells[x][y] = "void";
+					break;
+				case '+':
+					this.cells[x][y] = null;
+					break;
+				default:
+					console.log("unknown character: \'" + level_string.charAt(pos) + "\'");
+				}
+				pos++;
+				if (level_string.charAt(pos) == '\n') {
+					pos++;
+				}
+			}
+		}
+	} else {
+		var width = width_or_name;
+		this.w = width;
+		this.h = height;
+		this.action_queue = []; //elements are arrays of actions to be executed simultaneously
+		this.cells = [];
+		this.dirt_ids = [];
+		for (var i = 0; i < width; i++) {
+			this.cells[i] = [];
+			this.dirt_ids[i] = [];
+			for (var j = 0; j < height; j++) {
+				this.cells[i][j] = null; //elements are (as strings): wall, rock, void, human, infected, explosive
+				this.dirt_ids[i][j] = Math.floor(Math.random()*4);
+			}
 		}
 	}
 };

@@ -194,4 +194,5 @@ function main_function() {
 if (document.getElementById("game_canvas").getContext != undefined)
 	loadScripts([	"script/debug.js", "script/sprite.js", "script/world.js", "script/world_draw.js",
 					"script/state.js", "script/worldstate.js", "script/pausestate.js",
+					"script/levels.js",
 				], main_function);

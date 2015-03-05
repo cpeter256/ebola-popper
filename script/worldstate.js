@@ -2,7 +2,7 @@
 
 function WorldState(width, height, canvas, push_state, pop_state) {
 	State.apply(this, [push_state, pop_state]);
-	this.world = new World(width, height);
+	this.world = new World("level_4"); //bluh bluh testing crap
 	this.type = "world";
 	
 	this.move_max = 1000;	//ms
@@ -28,7 +28,7 @@ function WorldState(width, height, canvas, push_state, pop_state) {
 	
 	//smelly test shit
 	//hardcoding a level yeaaaaaa
-	this.world.cells[1][0] = "human";
+	/*this.world.cells[1][0] = "human";
 	this.world.cells[1][2] = "explosive";
 	this.world.cells[3][1] = "explosive";
 	this.world.cells[3][2] = "explosive";
@@ -39,7 +39,8 @@ function WorldState(width, height, canvas, push_state, pop_state) {
 	this.world.cells[5][5] = "explosive";
 	
 	this.world.cells[5][6] = "void";
-	this.world.cells[6][5] = "rock";
+	this.world.cells[6][5] = "rock";*/
+	
 }
 WorldState.prototype = Object.create(State.prototype);
 WorldState.prototype.constructor = WorldState;
