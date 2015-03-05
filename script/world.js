@@ -300,6 +300,7 @@ World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch, cursor_to, c
 					break;
 				case "wait":
 					y_off = null;
+					do_trans = true;
 					break;
 				case "splosion":
 					y_off = null;
