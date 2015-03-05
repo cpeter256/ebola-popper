@@ -81,6 +81,8 @@ function main_function() {
 			state_stack.pop();
 		}
 	};
+	
+	//testing
 	state_stack.push(new WorldState(9, 9, the_canvas, push_state, pop_state));
 	
 	var loading = null;
@@ -124,7 +126,6 @@ function main_function() {
 				state_stack[i].draw(the_canvas, the_ctx);
 			}
 		} else if (loading == null) {
-			//Anthony: Could we load sprites outside of the animationframe step? I'd prefer to not have to Load sprites in the menu's constructor
 			loading = true;
 			get_loadstatus = load_sprites();
 		} else {
