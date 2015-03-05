@@ -211,11 +211,16 @@ World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch, cursor_to, c
 		y_pred = function() {};
 	}
 	var action_map = {};
+	var splode_adj = {}; var s_dirs = [{x: -1, y: 0}, {x: 1, y: 0}, {x: 0, y: -1}, {x: 0, y: 1}];
 	if (this.action_queue.length > 0) {
 		for (var a in this.action_queue[0]) {
 			var action = this.action_queue[0][a];
 			//GHETTOEST SHIT EVER
 			action_map["" + action.x + " " + action.y] = action.action;
+			if (action.action == "splosion") for (var d in s_dirs) {
+				var loc = {x: action.x + s_dirs[d].x, y: action.y + s_dirs[d].y};
+				splode_adj["" + loc.x + " " + loc.y] = true;
+			}
 		}
 	}
 
@@ -261,8 +266,14 @@ World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch, cursor_to, c
 			var blob_dist = .1;
 			var blob_height = 30;
 			var trans_target = null;
-			if (action_map["" + i + " " + j]) { //OH GOD WHYYYY
+			if (action_map["" + i + " " + j] != undefined || (splode_adj["" + i + " " + j] != undefined &&
+												(this.cells[i][j] == "human" ||
+												this.cells[i][j] == "infected" ||
+												this.cells[i][j] == "explosive"))) { //OH GOD WHYYYY
 				var action = action_map["" + i + " " + j];
+				if (action == undefined) {
+					action = "wait";
+				}
 				var do_trans = false;
 				
 				switch (action) {
@@ -300,7 +311,7 @@ World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch, cursor_to, c
 					break;
 				case "wait":
 					y_off = null;
-					do_trans = true;
+					do_trans = true; 
 					break;
 				case "splosion":
 					y_off = null;
@@ -334,8 +345,10 @@ World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch, cursor_to, c
 				
 				if (do_trans) {
 					var prog = ["human", "infected", "explosive", "explosive"];
-					if (this.cells[i][j] == "infected" || this.cells[i][j] == "explosive") 
+					if (splode_adj["" + i + " " + j] == true || this.cells[i][j] == "infected" || this.cells[i][j] == "explosive") {
 						trans_target = prog[prog.indexOf(this.cells[i][j])];
+						//console.log(splode_adj);
+					}
 				}
 			}
 			
