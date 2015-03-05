@@ -254,9 +254,12 @@ World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch, cursor_to, c
 			var j = cy;
 			
 			var displacement = {x: 0, y: 0};
+			var splode_disp = [];
 			var y_off = 0;
 			var x_off = 40;
 			var cycles_per_state = 2;
+			var blob_dist = .1;
+			var blob_height = 30;
 			var trans_target = null;
 			if (action_map["" + i + " " + j]) { //OH GOD WHYYYY
 				var action = action_map["" + i + " " + j];
@@ -290,15 +293,34 @@ World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch, cursor_to, c
 				case "down":
 					displacement.y = time;
 					do_trans = true;
+					y_off = 0;
 					x_off = Math.floor(time*4*cycles_per_state)%4;
 					if (x_off == 3) x_off = 1;
 					x_off *= 40;
+					break;
+				case "wait":
+					y_off = null;
+					break;
+				case "splosion":
+					y_off = null;
+					var psd = function(coord) {
+						var s_pos = {	x: coord.x*Math.cos(yaw)-coord.y*Math.sin(yaw),
+										y: coord.x*Math.sin(yaw)+coord.y*Math.cos(yaw)};
+						s_pos.y *= scale_amount;
+						splode_disp.push(s_pos);
+					};
+					psd({x: 0, y: -1});
+					psd({x: 1, y: 0});
+					psd({x: 0, y: 1});
+					psd({x: -1, y: 0});
 					break;
 				default:
 					//do nothing
 				}
 				
-				if (yaw+Math.PI/4 < Math.PI/2) {
+				if (y_off == null) {
+					y_off = 0;
+				} else if (yaw+Math.PI/4 < Math.PI/2 || yaw+Math.PI/4 >= 4*Math.PI/2) {
 					y_off += 0;
 				} else if (yaw+Math.PI/4 < 2*Math.PI/2) {
 					y_off += 120;
@@ -394,6 +416,47 @@ World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch, cursor_to, c
 			t_pos.y *= scale_amount;
 			t_pos.x += x; t_pos.y += y + (.5*scale - 8)*scale_amount;
 			
+			
+			/*if (this.cells[i][j] == "human") {
+				var psd = function(coord) {
+					var s_pos = {	x: coord.x*Math.cos(yaw)-coord.y*Math.sin(yaw),
+									y: coord.x*Math.sin(yaw)+coord.y*Math.cos(yaw)};
+					s_pos.y *= scale_amount;
+					splode_disp.push(s_pos);
+				};
+				psd({x: 0, y: -1});
+				psd({x: 1, y: 0});
+				psd({x: 0, y: 1});
+				psd({x: -1, y: 0});
+			}*/
+			if (splode_disp.length > 0) {
+				var ids = [];
+				if (yaw < Math.PI/2) {
+					ids = [3, 0];
+				} else if (yaw < 2*Math.PI/2) {
+					ids = [2, 3];
+				} else if (yaw < 3*Math.PI/2) {
+					ids = [1, 2];
+				} else if (yaw < 4*Math.PI/2) {
+					ids = [0, 1];
+				}
+				for (var id in ids) {
+					var disp_unit = splode_disp[ids[id]];
+					var base_pos = {x: t_pos.x-10, y: t_pos.y-10 - (.5*scale - 8)*scale_amount};
+					var scaled_time = time*(1+6*blob_dist);
+					for (var p = 0; p < 6; p++) {
+						var v_time = scaled_time-p*blob_dist;
+						if (v_time <= 1 && v_time >= 0) {
+							var pos = {x: base_pos.x, y: base_pos.y};
+							pos.x += scale*v_time*disp_unit.x;
+							pos.y += scale*v_time*disp_unit.y;
+							pos.y -= blob_height*(1-((2*v_time-1)*(2*v_time-1)));
+							ctx.drawImage(sprites["blob"], 20*p, 0, 20, 20, pos.x, pos.y, 20, 20);
+						}
+					}
+				}
+			}
+			
 			switch (this.cells[i][j]) {
 			case "human":
 				ctx.drawImage(sprites["Villager"], x_off, 2+y_off, 40, 38, t_pos.x-20, t_pos.y-38, 40, 38);
@@ -432,6 +495,7 @@ World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch, cursor_to, c
 				
 				ctx.stroke();
 			}
+			
 			
 			if (cursor_to != null && Math.floor(cursor_to.x) == i && Math.floor(cursor_to.y) == j) {
 				ctx.save();
@@ -503,6 +567,33 @@ World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch, cursor_to, c
 				ctx.stroke();
 				ctx.restore();
 			}
+			if (splode_disp.length > 0) {
+				var ids = [];
+				if (yaw < Math.PI/2) {
+					ids = [1, 2];
+				} else if (yaw < 2*Math.PI/2) {
+					ids = [0, 1];
+				} else if (yaw < 3*Math.PI/2) {
+					ids = [3, 0];
+				} else if (yaw < 4*Math.PI/2) {
+					ids = [2, 3];
+				}
+				for (var id in ids) {
+					var disp_unit = splode_disp[ids[id]];
+					var base_pos = {x: t_pos.x-10, y: t_pos.y-10 - (.5*scale - 8)*scale_amount};
+					var scaled_time = time*(1+6*blob_dist);
+					for (var p = 6; p >= 0; p--) {
+						var v_time = scaled_time-p*blob_dist;
+						if (v_time <= 1 && v_time >= 0) {
+							var pos = {x: base_pos.x, y: base_pos.y};
+							pos.x += scale*v_time*disp_unit.x;
+							pos.y += scale*v_time*disp_unit.y;
+							pos.y -= blob_height*(1-((2*v_time-1)*(2*v_time-1)));
+							ctx.drawImage(sprites["blob"], 20*p, 0, 20, 20, pos.x, pos.y, 20, 20);
+						}
+					}
+				}
+			}
 		}
 	}
 };
@@ -544,6 +635,7 @@ World.prototype.advance_state = function() {
 				this.advance_infection(npos);
 				break;
 			case "splosion":
+				this.cells[action.x][action.y] = null;
 				var adj = [	{x: action.x-1, y: action.y},
 							{x: action.x+1, y: action.y},
 							{x: action.x, y: action.y-1},
@@ -581,7 +673,7 @@ World.prototype.advance_infection = function(pos, force) { //also no (positional
 		next = "explosive";
 		break;
 	case "explosive":
-		next = null;
+		next = "explosive";
 		this.push_action_back(new Action(pos.x, pos.y, "splosion"));
 		break;
 	default:
