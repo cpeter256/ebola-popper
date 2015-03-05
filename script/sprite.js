@@ -5,6 +5,14 @@ var sprites = {	"Villager": null,
 				"Infected": null,
 				"Explosive": null,
 				"blob": null,
+				"dirt1": null,
+				"dirt2": null,
+				"dirt3": null,
+				"dirt4": null,
+				"Rock": null,
+				"playbutton": null,
+				"LevelButton": null,
+				"AboutButton": null,
 			};
 
 //Call this and all the sprites will load eventually
