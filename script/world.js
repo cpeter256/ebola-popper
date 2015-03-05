@@ -100,7 +100,7 @@ World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch, cursor_to, c
 		for (var j = 0; j < this.h; j++) {
 			//testing crap
 			//console.log(this.dirt_ids[i]);
-			if (this.tiles[i][j] != "void") {
+			if (this.cells[i][j] != "void") {
 				var dirt_tile = sprites["dirt" + (this.dirt_ids[i][j] + 1)];
 				ctx.drawImage(dirt_tile, 0, 0, 48, 48, scale*(i-(this.w/2)), scale*(j-(this.h/2)), 48, 48);
 			}
