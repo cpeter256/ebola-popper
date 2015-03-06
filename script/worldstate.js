@@ -7,6 +7,7 @@ function WorldState(levelname, canvas, push_state, pop_state) {
 	this.draw_children = false;
 	
 	this.move_max = 1000;	//ms
+	this.wait_max = 250;
 	this.splode_max = 500;
 	this.state_time = 0;
 	this.state_max = null;
@@ -53,8 +54,11 @@ WorldState.prototype.constructor = WorldState;
 WorldState.prototype.draw = function(canvas, ctx) {
 	if (this.state_max == null && this.world.action_queue.length > 0) {
 		this.state_max = this.move_max;
-		if (this.world.action_queue[0].length > 0 &&
-			this.world.action_queue[0][0].action == "splosion") this.state_max = this.splode_max;
+		if (this.world.action_queue[0][0].action == "splosion") {
+			this.state_max = this.splode_max;
+		} else if (this.world.action_queue[0][0].action == "wait") {
+			this.state_max = this.wait_max;
+		}
 	}
 	var state_percent = 0;
 	if (this.state_max != null) state_percent = this.state_time/this.state_max;
@@ -76,8 +80,13 @@ WorldState.prototype.advance = function() {
 	this.state_max = null;
 	if (this.world.action_queue.length > 0) {
 		this.state_max = this.move_max;
-		if (this.world.action_queue[0].length > 0 &&
-			this.world.action_queue[0][0].action == "splosion") this.state_max = this.splode_max;
+		if (this.world.action_queue[0].length > 0) {
+			if (this.world.action_queue[0][0].action == "splosion") {
+				this.state_max = this.splode_max;
+			} else if (this.world.action_queue[0][0].action == "wait") {
+				this.state_max = this.wait_max;
+			}
+		}
 	}
 	if (status != null) {
 		switch (status) {
