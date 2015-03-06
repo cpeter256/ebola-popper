@@ -56,16 +56,7 @@ MenuState.prototype.draw=function(canvas,ctx){
 	var levelSelectBut = sprites["LevelButton"];
 	var aboutBut = sprites["AboutButton"];
 	
-	/*This is JS. The canvas never scales.
-	//Assigning coords in the case of scaling images or canvas
-	this.playButtonCoords[0]=[canvas.width-this.playBut.width,0];
-	this.playButtonCoords[1]=[this.playButtonCoords[0][0]+this.playBut.width, this.playButtonCoords[0][1]+ this.playBut.height];
-	this.levelSelectCoords[0]=[canvas.width-this.levelSelectBut.width, this.playButtonCoords[1][1]+5];
-	this.levelSelectCoords[1]=[this.levelSelectCoords[0][0]+this.levelSelectBut.width,this.levelSelectCoords[0][1]+this.levelSelectBut.height];
-	this.aboutButtonCoords[0]=[canvas.width-this.aboutBut.width,this.levelSelectCoords[1][1]+5];
-	this.aboutButtonCoords[1]=[this.aboutButtonCoords[0][0]+this.aboutBut.width,this.aboutButtonCoords[0][1]+this.aboutBut.height];*/
-	
-	//console.log(this.playButtonCoords,"  +  ",this.levelSelectCoords,"  +  ",this.aboutButtonCoords);
+
 	
 	ctx.drawImage(playBut,	0, 0, playBut.width, playBut.height,
 							this.playButtonInfo.x_min, this.playButtonInfo.y_min, this.playButtonInfo.width, this.playButtonInfo.height);
