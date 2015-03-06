@@ -17,10 +17,10 @@ PauseState.prototype.draw = function(canvas, ctx) {
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
 	ctx.globalAlpha = 1;
 };
-PauseState.prototype.onkeydown = function(key) {
-	if (key == "Esc" || key == "Escape") {
+PauseState.prototype.onkeydown = function(keyCode) {
+	if (keyCode == 27) { //escape
 		this.pop_state(this);
-	} else if (key == "q") {
+	} else if (keyCode == 81) { //q
 		this.pop_state(this);
 		this.menu.pop_world();
 	}

@@ -13,4 +13,4 @@ State.prototype.onmousemove = function(e) {};
 State.prototype.onmousedown = function(e) {};
 State.prototype.onmouseup = function(e) {};
 State.prototype.onmouseout = function(e) {this.onmouseup(e);};
-State.prototype.onkeydown = function(key) {};
+State.prototype.onkeydown = function(keyCode) {};

@@ -166,8 +166,8 @@ WorldState.prototype.onmouseup = function(e) {
 		this.dragging_board = false;
 	}
 };
-WorldState.prototype.onkeydown = function(key) {
-	if (key == "Esc" || key == "Escape") {
+WorldState.prototype.onkeydown = function(keycode) {
+	if (keycode == 27) { //escape
 		this.onmouseout({button: 0});
 		this.push_state(new PauseState(this.push_state, this.pop_state_raw));
 	}
