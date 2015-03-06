@@ -21,7 +21,7 @@ function MenuState(canvas, push_state, pop_state) {
 							y_min: this.playButtonInfo.y_max+5,
 							x_max: canvas.width,
 							y_max: this.playButtonInfo.y_max+5+this.levelButtonInfo.height,
-							action: "levels"};
+							action: "level"};
 	this.aboutButtonInfo = {width: 256, height: 96};
 	this.aboutButtonInfo = {width: this.aboutButtonInfo.width, height: this.aboutButtonInfo.height,
 							x_min: canvas.width-this.aboutButtonInfo.width,
@@ -79,10 +79,10 @@ MenuState.prototype.onmousedown = function(e) {
 				case "play":
 					this.push_state(new WorldState("level_1", this.canvas, this.push_state, this.pop_state_raw));
 					break;
-				case "about":
+				case "level":
 					//this.push_state(new AboutState(this.push_state,this.pop_state));
 					break;
-				case "level":
+				case "about":
 					//this.push_state(new LevelSelectState(this.push_state,this.pop_state));
 					break;
 				default:
