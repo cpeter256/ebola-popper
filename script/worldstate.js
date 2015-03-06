@@ -6,6 +6,8 @@ function WorldState(levelname, canvas, push_state, pop_state) {
 	this.type = "world";
 	this.draw_children = false;
 	
+	this.num_moves = 0;
+	
 	this.move_max = 1000;	//ms
 	this.wait_max = 250;
 	this.splode_max = 500;
@@ -74,6 +76,9 @@ WorldState.prototype.draw = function(canvas, ctx) {
 	}
 													
 	this.world.draw(ctx, state_percent, canvas.width/2, canvas.height/2, this.view_scale, this.view_yaw+this.d_yaw, this.view_pitch+this.d_pitch, cursor_to, drag_orig);
+
+	ctx.fillStyle = "#000000";
+	ctx.fillText("" + this.num_moves + (this.num_moves == 1 ? " move" : " moves"), 2, 9);
 };
 WorldState.prototype.advance = function() {
 	var status = this.world.advance_state();
@@ -142,9 +147,12 @@ WorldState.prototype.onmouseup = function(e) {
 			//this is actually pretty normal
 			//console.log("Something broke! (double drag release)");
 		} else if (this.dragging_board == false) {
-			if (this.valid_move) this.world.handle_input(
+			if (this.valid_move) {
+				var did_move = this.world.handle_input(
 									this.world.screen_to_world(this.drag_pos, this.canvas_w/2, this.canvas_h/2, this.view_scale, this.view_yaw, this.view_pitch),
 									this.world.screen_to_world(this.mouse_pos, this.canvas_w/2, this.canvas_h/2, this.view_scale, this.view_yaw, this.view_pitch));
+				if (did_move) this.num_moves++;
+			}
 		} else {
 			this.view_yaw += this.d_yaw;
 			this.view_pitch += this.d_pitch;

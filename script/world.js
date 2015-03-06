@@ -132,8 +132,10 @@ World.prototype.handle_input = function(start, end) { //start, end = {x: num, y:
 		
 		if (dir != null) {
 			this.action_queue.push([new Action(cell_pos.x, cell_pos.y, dir)]);
+			return true;
 		}
 	}
+	return false;
 };
 
 //Actions are (as strings): left, right, up, down, wait, splode, infect
