@@ -9,7 +9,7 @@ function MenuState(canvas, push_state,pop_state) {
 	this.levelSelectBut=null;
 	this.aboutBut=null;
 	this.logo=null;
-	//Set up 3 button location infos get the info in the draw method
+	//Set up 3 location infos get the info in the draw and onclick functions
 	//First tuple is min coords and second tuple is max coords, is for checking case
 	this.playButtonCoords=[[0,0],[0,0],"play"];
 	
