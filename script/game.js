@@ -185,7 +185,7 @@ function main_function() {
 	var last_keycode = null;
 	window.addEventListener('keyup', function(e) {last_keycode = null;});
 	window.addEventListener('keydown', function(e) {
-		if (mouse_in && e.keyCode != last_keycode) {
+		if (/*mouse_in && */e.keyCode != last_keycode) {
 			stack_top().onkeydown(e.key);
 		}
 		last_keycode = e.keyCode;
