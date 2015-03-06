@@ -3,8 +3,9 @@
 //Implement the pause state here
 //Look to state.js and worldstate.js for examples
 
-function PauseState(push_state, pop_state) {
+function PauseState(world, push_state, pop_state) {
 	State.apply(this, [push_state, pop_state]);
+	this.pop_world = function() {world.force_pop();};
 	this.type = "pause";
 }
 PauseState.prototype = Object.create(State.prototype);
@@ -18,5 +19,8 @@ PauseState.prototype.draw = function(canvas, ctx) {
 PauseState.prototype.onkeydown = function(key) {
 	if (key == "Esc" || key == "Escape") {
 		this.pop_state(this);
+	} else if (key == "q") {
+		this.pop_state(this);
+		this.pop_world();
 	}
 };

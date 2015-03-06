@@ -45,6 +45,11 @@ function WorldState(levelname, canvas, push_state, pop_state) {
 }
 WorldState.prototype = Object.create(State.prototype);
 WorldState.prototype.constructor = WorldState;
+
+WorldState.prototype.force_pop = function() {
+	this.pop_state(this);
+};
+
 WorldState.prototype.draw = function(canvas, ctx) {
 	if (this.state_max == null && this.world.action_queue.length > 0) {
 		this.state_max = this.move_max;
@@ -133,6 +138,6 @@ WorldState.prototype.onmouseup = function(e) {
 WorldState.prototype.onkeydown = function(key) {
 	if (key == "Esc" || key == "Escape") {
 		this.onmouseout({button: 0});
-		this.push_state(new PauseState(this.push_state, this.pop_state_raw));
+		this.push_state(new PauseState(this, this.push_state, this.pop_state_raw));
 	}
 };
