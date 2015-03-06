@@ -1,9 +1,10 @@
 "use strict";
 
-function WorldState(width, height, canvas, push_state, pop_state) {
+function WorldState(levelname, canvas, push_state, pop_state) {
 	State.apply(this, [push_state, pop_state]);
-	this.world = new World("level_4"); //bluh bluh testing crap
+	this.world = new World(levelname);
 	this.type = "world";
+	this.draw_children = false;
 	
 	this.move_max = 1000;	//ms
 	this.splode_max = 500;

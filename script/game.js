@@ -82,8 +82,7 @@ function main_function() {
 		}
 	};
 	
-	//testing
-	state_stack.push(new WorldState(9, 9, the_canvas, push_state, pop_state));
+	state_stack.push(new MenuState(the_canvas, push_state, pop_state));
 	
 	var loading = null;
 	var get_loadstatus = null;
@@ -101,12 +100,12 @@ function main_function() {
 				var w_id = 0;
 				while (state_stack[w_id].type != "world") {
 					w_id++;
-					if (w_id > state_stack.length) {
-						console.log("something terrible happened");
+					if (w_id >= state_stack.length) {
+						//console.log("something terrible happened");
 						break;
 					}
 				}
-				last_timestamp = frame_begin-state_stack[w_id].state_time;
+				if (w_id < state_stack.length) last_timestamp = frame_begin-state_stack[w_id].state_time;
 			} else if (stack_top().world.action_queue.length == 0) {
 				last_timestamp = frame_begin;
 			} else if (stack_top().state_max == null) { //idle
@@ -193,6 +192,6 @@ function main_function() {
 
 if (document.getElementById("game_canvas").getContext != undefined)
 	loadScripts([	"script/debug.js", "script/sprite.js", "script/world.js", "script/world_draw.js",
-					"script/state.js", "script/worldstate.js", "script/pausestate.js",
+					"script/state.js", "script/worldstate.js", "script/pausestate.js", "script/menustate.js",
 					"script/levels.js",
 				], main_function);
