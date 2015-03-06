@@ -37,6 +37,16 @@ LevelOverState.prototype.draw = function(canvas, ctx) {
 	
 	ctx.restore();
 };
+LevelOverState.prototype.onmousedown = function(e) {
+	this.pop_state(this);
+	this.menu.pop_world();
+	
+	if (this.victory) {
+		if (this.menu.current_level < this.menu.levels.length-1) this.menu.current_level++;
+	}
+	
+	this.menu.launch_current_level();
+};
 LevelOverState.prototype.onkeydown = function(key) {
 	this.pop_state(this);
 	this.menu.pop_world();
