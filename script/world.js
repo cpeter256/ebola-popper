@@ -192,6 +192,34 @@ World.prototype.advance_state = function() {
 			}
 		}
 	}
+	
+	var infected_left = 0;
+	var humans_left = 0;
+	for (var i = 0; i < this.w; i++) {
+		for (var j = 0; j < this.h; j++) {
+			switch (this.cells[i][j]) {
+			case "human":
+				humans_left++;
+				break;
+			case "infected":
+			case "explosive":
+				infected_left++;
+				break;
+			default:
+				//nothing
+			}
+		}
+	}
+	
+	if (infected_left == 0) {
+		if (humans_left > 0) {
+			return "lose";
+		} else {
+			return "win";
+		}
+	} else {
+		return null;
+	}
 };
 World.prototype.move = function(pos, vec) { //no error checking
 	var npos = {x: pos.x + vec.x, y: pos.y + vec.y};

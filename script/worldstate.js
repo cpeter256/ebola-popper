@@ -72,12 +72,24 @@ WorldState.prototype.draw = function(canvas, ctx) {
 	this.world.draw(ctx, state_percent, canvas.width/2, canvas.height/2, this.view_scale, this.view_yaw+this.d_yaw, this.view_pitch+this.d_pitch, cursor_to, drag_orig);
 };
 WorldState.prototype.advance = function() {
-	this.world.advance_state();
+	var status = this.world.advance_state();
 	this.state_max = null;
 	if (this.world.action_queue.length > 0) {
 		this.state_max = this.move_max;
 		if (this.world.action_queue[0].length > 0 &&
 			this.world.action_queue[0][0].action == "splosion") this.state_max = this.splode_max;
+	}
+	if (status != null) {
+		switch (status) {
+		case "win":
+			console.log("TESTING: stage won!");
+			break;
+		case "lose":
+			console.log("TESTING: stage lost!");
+			break;
+		default:
+			console.log("Something terrible has occurred!");
+		}
 	}
 };
 WorldState.prototype.onmousemove = function(e) {
