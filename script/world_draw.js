@@ -1,14 +1,12 @@
 "use strict";
 
-//HERE BE DRAGONS
+//HERE BE DRAWGONS
 World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch, cursor_to, cursor_init) { //x, y are center, yaw, pitch are radians, 0 pitch = top-down
-	ctx.fillStyle = "#000000";
-	ctx.fillText(time, 2, 9);
+	//ctx.fillStyle = "#000000";
+	//ctx.fillText(time, 2, 9);
 	while (yaw > Math.PI*2) yaw -= Math.PI*2;
 	while (yaw < 0) yaw += Math.PI*2;
-	
-	//pre-sprite test code
-	ctx.strokeStyle = "#000000";
+
 	ctx.save();
 	ctx.translate(x, y);
 	
@@ -17,7 +15,7 @@ World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch, cursor_to, c
 	
 	ctx.rotate(yaw);
 	
-	ctx.beginPath();
+	//ctx.beginPath();
 	for (var i = 0; i < this.w; i++) {
 		for (var j = 0; j < this.h; j++) {
 			//testing crap
@@ -39,7 +37,7 @@ World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch, cursor_to, c
 			//ctx.lineTo(scale*(0+.5-(this.w/2)), scale*(0-.5-(this.h/2)));
 		}
 	}
-	ctx.stroke();
+	//ctx.stroke();
 	ctx.restore();
 	
 	
