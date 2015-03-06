@@ -46,9 +46,9 @@ function WorldState(levelname, canvas, push_state, pop_state) {
 WorldState.prototype = Object.create(State.prototype);
 WorldState.prototype.constructor = WorldState;
 
-WorldState.prototype.force_pop = function() {
+/*WorldState.prototype.force_pop = function() {
 	this.pop_state(this);
-};
+};*/
 
 WorldState.prototype.draw = function(canvas, ctx) {
 	if (this.state_max == null && this.world.action_queue.length > 0) {
@@ -82,10 +82,12 @@ WorldState.prototype.advance = function() {
 	if (status != null) {
 		switch (status) {
 		case "win":
-			console.log("TESTING: stage won!");
+			this.push_state(new LevelOverState(true, this.canvas, this.push_state, this.pop_state_raw));
+			//console.log("TESTING: stage won!");
 			break;
 		case "lose":
-			console.log("TESTING: stage lost!");
+			this.push_state(new LevelOverState(false, this.canvas, this.push_state, this.pop_state_raw));
+			//console.log("TESTING: stage lost!");
 			break;
 		default:
 			console.log("Something terrible has occurred!");
@@ -150,6 +152,6 @@ WorldState.prototype.onmouseup = function(e) {
 WorldState.prototype.onkeydown = function(key) {
 	if (key == "Esc" || key == "Escape") {
 		this.onmouseout({button: 0});
-		this.push_state(new PauseState(this, this.push_state, this.pop_state_raw));
+		this.push_state(new PauseState(this.push_state, this.pop_state_raw));
 	}
 };

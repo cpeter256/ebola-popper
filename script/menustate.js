@@ -5,6 +5,8 @@ function MenuState(canvas, push_state, pop_state) {
 	this.type = "menu";
 	
 	this.canvas = canvas;
+	this.levels = ["level_1", "level_2", "level_3", "level_4", "level_5"];
+	this.current_level = 0;
 	
 	this.clickables=[];
 	//Set up 3 location infos get the info in the draw and onclick functions
@@ -31,10 +33,17 @@ function MenuState(canvas, push_state, pop_state) {
 							action: "about"};
 	
 	this.clickables.push(this.playButtonInfo, this.levelButtonInfo, this.aboutButtonInfo);
+	
+	this.current_world = null;
 }
 
 MenuState.prototype=Object.create(State.prototype);
 MenuState.prototype.constructor=MenuState;
+
+MenuState.prototype.pop_world = function() {
+	if (this.current_world != null) this.current_world.pop_state(this.current_world);
+	this.current_world = null;
+};
 
 MenuState.prototype.draw=function(canvas,ctx){
 	//background, logo, play, Level Select, about
@@ -77,7 +86,7 @@ MenuState.prototype.onmousedown = function(e) {
 				//button clicked 
 				switch(this.clickables[but].action){
 				case "play":
-					this.push_state(new WorldState("level_1", this.canvas, this.push_state, this.pop_state_raw));
+					this.launch_current_level();
 					break;
 				case "level":
 					//this.push_state(new AboutState(this.push_state,this.pop_state));
@@ -91,5 +100,14 @@ MenuState.prototype.onmousedown = function(e) {
 				break;
 			}	
 		}
+	}
+};
+
+MenuState.prototype.launch_current_level = function() {
+	if (this.current_world == null) {
+		this.current_world = new WorldState(this.levels[this.current_level], this.canvas, this.push_state, this.pop_state_raw);
+		this.push_state(this.current_world);
+	} else {
+		console.log("something terrible has happened!");
 	}
 };

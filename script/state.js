@@ -2,6 +2,7 @@
 
 function State(push_state, pop_state) {
 	this.draw_children = true;
+	this.request_menu = false;
 	this.type = "abstract";
 	this.push_state = push_state;
 	this.pop_state_raw = pop_state;

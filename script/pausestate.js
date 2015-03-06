@@ -3,9 +3,10 @@
 //Implement the pause state here
 //Look to state.js and worldstate.js for examples
 
-function PauseState(world, push_state, pop_state) {
+function PauseState(push_state, pop_state) {
 	State.apply(this, [push_state, pop_state]);
-	this.pop_world = function() {world.force_pop();};
+	this.request_menu = true;
+	this.menu = null;
 	this.type = "pause";
 }
 PauseState.prototype = Object.create(State.prototype);
@@ -21,6 +22,6 @@ PauseState.prototype.onkeydown = function(key) {
 		this.pop_state(this);
 	} else if (key == "q") {
 		this.pop_state(this);
-		this.pop_world();
+		this.menu.pop_world();
 	}
 };

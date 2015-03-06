@@ -74,6 +74,9 @@ function main_function() {
 	var state_stack = [];
 	function stack_top() {return state_stack[state_stack.length-1];};
 	function push_state(state) {
+		if (state.request_menu == true) {
+			state.menu = state_stack[0];
+		}
 		state_stack.push(state);
 	};
 	function pop_state(state) {
@@ -192,6 +195,7 @@ function main_function() {
 
 if (document.getElementById("game_canvas").getContext != undefined)
 	loadScripts([	"script/debug.js", "script/sprite.js", "script/world.js", "script/world_draw.js",
-					"script/state.js", "script/worldstate.js", "script/pausestate.js", "script/menustate.js",
+					"script/state.js", "script/menustate.js", "script/worldstate.js",
+					"script/pausestate.js", "script/leveloverstate.js",
 					"script/levels.js",
 				], main_function);
