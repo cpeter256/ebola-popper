@@ -23,7 +23,7 @@ World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch, cursor_to, c
 			//testing crap
 			//console.log(this.dirt_ids[i]);
 			if (this.cells[i][j] != "void") {
-				var dirt_tile = sprites["dirt" + (this.dirt_ids[i][j] + 1)];
+				var dirt_tile = sprites["Dirt" + (this.dirt_ids[i][j] + 1)];
 				ctx.drawImage(dirt_tile, 0, 0, 48, 48, scale*(i-(this.w/2)), scale*(j-(this.h/2)), 48, 48);
 			}
 			/*ctx.moveTo(scale*(i-(this.w/2)), scale*(j-(this.h/2)));
@@ -398,7 +398,7 @@ World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch, cursor_to, c
 							pos.x += scale*v_time*disp_unit.x;
 							pos.y += scale*v_time*disp_unit.y;
 							pos.y -= blob_height*(1-((2*v_time-1)*(2*v_time-1)));
-							ctx.drawImage(sprites["blob"], 20*p, 0, 20, 20, pos.x, pos.y, 20, 20);
+							ctx.drawImage(sprites["Blob"], 20*p, 0, 20, 20, pos.x, pos.y, 20, 20);
 						}
 					}
 				}
@@ -540,7 +540,7 @@ World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch, cursor_to, c
 							pos.x += scale*v_time*disp_unit.x;
 							pos.y += scale*v_time*disp_unit.y;
 							pos.y -= blob_height*(1-((2*v_time-1)*(2*v_time-1)));
-							ctx.drawImage(sprites["blob"], 20*p, 0, 20, 20, pos.x, pos.y, 20, 20);
+							ctx.drawImage(sprites["Blob"], 20*p, 0, 20, 20, pos.x, pos.y, 20, 20);
 						}
 					}
 				}
