@@ -27,6 +27,6 @@ function load_sounds() { //returns function() returns {loaded_sounds: int, max: 
 };
 
 function play_sound(name) {
-	sounds[name].fastSeek(0);
+	sounds[name].currentTime = 0;
 	sounds[name].play();
 }
