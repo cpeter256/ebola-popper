@@ -147,3 +147,6 @@ b++++++++b\n\
 b++i+ere+b\n\
 ";
 
+
+var all_levels = [{name: "level_1", par: 1}, {name: "level_2", par: 1}, {name: "level_3", par: 3}, {name: "level_4", par: 2}, {name: "level_5", par: 4}, {name: "level_6", par: 2}, {name: "level_7", par: 1}, {name: "level_8", par: 1}, {name: "level_9", par: 1}, {name: "level_10", par: 1}, {name: "level_11", par: 1}, {name: "level_12", par: 1}, {name: "level_13", par: 1}];
+	
