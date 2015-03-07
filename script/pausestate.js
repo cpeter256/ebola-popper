@@ -3,11 +3,13 @@
 //Implement the pause state here
 //Look to state.js and worldstate.js for examples
 
-function PauseState(push_state, pop_state) {
+function PauseState(canvas, push_state, pop_state) {
 	State.apply(this, [push_state, pop_state]);
 	this.request_menu = true;
 	this.menu = null;
 	this.type = "pause";
+	
+	this.canvas=canvas;
 }
 PauseState.prototype = Object.create(State.prototype);
 PauseState.prototype.constructor = PauseState;
