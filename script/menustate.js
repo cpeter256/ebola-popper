@@ -5,9 +5,10 @@ function MenuState(canvas, push_state, pop_state) {
 	this.type = "menu";
 	
 	this.canvas = canvas;
-	this.levels = ["level_1", "level_2", "level_3", "level_4", "level_5"];
+	this.levels = ["level_1", "level_2", "level_3", "level_4", "level_5","level_6","level_7","level_8","level_9","level_10","level_11","level_12","level_13"];
 	this.current_level = 0;
 	
+	this.logo=null;
 	this.clickables=[];
 	//Set up 3 location infos get the info in the draw and onclick functions
 	this.playButtonInfo = {width: 256, height: 96};
@@ -49,8 +50,8 @@ MenuState.prototype.draw=function(canvas,ctx){
 	//background, logo, play, Level Select, about
 	ctx.fillStyle="#FFFFFF";
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	//this.logo=sprites["Logo"];
-	//ctx.drawImage(this.logo,0,0);
+	this.logo=sprites["Logo"];
+	ctx.drawImage(this.logo,0,0);
 	
 	var playBut = sprites["PlayButton"];
 	var levelSelectBut = sprites["LevelButton"];
