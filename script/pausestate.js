@@ -17,7 +17,8 @@ PauseState.prototype.draw = function(canvas, ctx) {
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
 	ctx.globalAlpha = 1;
 
-	var pausemessage = "PAUSED";
+	var pausemessage;
+	pausemessage = "PAUSED";
 	ctx.save();
 	ctx.fillStyle = "#FF0000";
 	ctx.translate(canvas.width/2, 80);
@@ -27,7 +28,7 @@ PauseState.prototype.draw = function(canvas, ctx) {
 
 	ctx.restore();
 	ctx.drawImage(sprites["PlayButton"], 20, 350); //placeholder button, should be Unpausebutton
-	ctx.drawImage(sprites["AboutButton"], canvas.width-276, 350); //Placeholder, need quit/main menu button
+	ctx.drawImage(sprites["LevelButton"], canvas.width-276, 350); //Placeholder, need quit/main menu button
 };
 
 PauseState.prototype.onkeydown = function(keyCode) {
