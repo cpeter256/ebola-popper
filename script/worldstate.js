@@ -1,12 +1,13 @@
 "use strict";
 
-function WorldState(levelname, canvas, push_state, pop_state) {
+function WorldState(levelname, par, canvas, push_state, pop_state) {
 	State.apply(this, [push_state, pop_state]);
 	this.world = new World(levelname);
 	this.type = "world";
 	this.draw_children = false;
 	
 	this.num_moves = 0;
+	this.par = par;
 	
 	this.move_max = 1000;	//ms
 	this.wait_max = 250;
@@ -21,6 +22,7 @@ function WorldState(levelname, canvas, push_state, pop_state) {
 	
 	this.canvas_w = canvas.width;
 	this.canvas_h = canvas.height;
+	this.canvas = canvas;
 	
 	this.mouse_pos = {x: 0, y: 0};
 	this.drag_pos = null;
@@ -96,11 +98,11 @@ WorldState.prototype.advance = function() {
 	if (status != null) {
 		switch (status) {
 		case "win":
-			this.push_state(new LevelOverState(true, this.canvas, this.push_state, this.pop_state_raw));
+			this.push_state(new LevelOverState(this.par, this.num_moves, true, this.canvas, this.push_state, this.pop_state_raw));
 			//console.log("TESTING: stage won!");
 			break;
 		case "lose":
-			this.push_state(new LevelOverState(false, this.canvas, this.push_state, this.pop_state_raw));
+			this.push_state(new LevelOverState(this.par, this.num_moves, false, this.canvas, this.push_state, this.pop_state_raw));
 			//console.log("TESTING: stage lost!");
 			break;
 		default:

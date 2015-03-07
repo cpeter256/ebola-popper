@@ -5,7 +5,7 @@ function MenuState(canvas, push_state, pop_state) {
 	this.type = "menu";
 	
 	this.canvas = canvas;
-	this.levels = ["level_1", "level_2", "level_3", "level_4", "level_5"];
+	this.levels = [{name: "level_1", par: 1}, {name: "level_2", par: 1}, {name: "level_3", par: 3}, {name: "level_4", par: 2}, {name: "level_5", par: 4}];
 	this.current_level = 0;
 	
 	this.clickables=[];
@@ -96,7 +96,7 @@ MenuState.prototype.onmousedown = function(e) {
 
 MenuState.prototype.launch_current_level = function() {
 	if (this.current_world == null) {
-		this.current_world = new WorldState(this.levels[this.current_level], this.canvas, this.push_state, this.pop_state_raw);
+		this.current_world = new WorldState(this.levels[this.current_level].name, this.levels[this.current_level].par, this.canvas, this.push_state, this.pop_state_raw);
 		this.push_state(this.current_world);
 	} else {
 		console.log("something terrible has happened!");
