@@ -23,11 +23,11 @@ PauseState.prototype.draw = function(canvas, ctx) {
 	ctx.translate(canvas.width/2, 80);
 	ctx.scale(4, 4);
 	ctx.textAlign = "center";
-	ctx.fillText(message1, 0, 40);
+	ctx.fillText(pausemessage, 0, 40);
 
 	ctx.restore;
-	ctx.drawImage(sprites["UnpauseButton"], 20, 350);
-	ctx.drawImage(sprites["MenuButton"], canvas.width-276, 350);//gonna need a menu button for this
+	ctx.drawImage(sprites["PlayButton"], 20, 350); //placeholder button, should be Unpausebutton
+	ctx.drawImage(sprites["AboutButton"], canvas.width-276, 350); //Placeholder, need quit/main menu button
 };
 
 PauseState.prototype.onkeydown = function(keyCode) {
@@ -39,7 +39,7 @@ PauseState.prototype.onkeydown = function(keyCode) {
 	}
 }; //not sure if we need to use key if we have buttons
 
-LevelOverState.prototype.onmousedown = function(e) {
+PauseState.prototype.onmousedown = function(e) {
 
 	if(e.button == 0){
 		if(e.layerX>=20 && e.layerX<=20+256 && e.layerY>=350 && e.layerY<=350+96){
