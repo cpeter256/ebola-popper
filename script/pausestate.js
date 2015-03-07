@@ -36,11 +36,11 @@ PauseState.prototype.draw = function(canvas, ctx) {
 PauseState.prototype.onkeydown = function(keyCode) {
 	if (keyCode == 27) { //escape
 		this.pop_state(this);
-	} else if (keyCode == 81) { //q
+	}/* else if (keyCode == 81) { //q
 		this.pop_state(this);
 		this.menu.pop_world();
-	}
-}; //not sure if we need to use key if we have buttons
+	}*/
+};
 
 PauseState.prototype.onmousedown = function(e) {
 
