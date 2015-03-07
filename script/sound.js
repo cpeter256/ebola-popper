@@ -1,7 +1,7 @@
 "use strict";
 
 //Map of every sound path to an Audio of the sound
-var sounds = {	
+var sounds = {	"BloodExplosionSound": null,
 			};
 
 //Call this and all the sprites will load eventually
@@ -13,9 +13,13 @@ function load_sounds() { //returns function() returns {loaded_sounds: int, max: 
 	for (var path in sounds) {
 		max_sounds++;
 		var snd = new Audio();
-		snd.src = "resource/" + path + ".png";
+		var snd_src = document.createElement("source");
+		snd_src.src = "resource/" + path + ".ogg";
+		snd_src.type = "audio/ogg";
+		snd.appendChild(snd_src);
 		snd.name = path;
-		snd.onload = function() {sounds[this.name] = this; sounds_loaded++;};
+		snd.preload = "auto";
+		snd.addEventListener("canplaythrough", function() {sounds[this.name] = this; sounds_loaded++;}, false);
 		head.appendChild(snd);
 	}
 	

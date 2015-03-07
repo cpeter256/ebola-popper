@@ -41,7 +41,7 @@ function draw_border(canvas, ctx) {
 };
 
 function draw_loadingbar(canvas, ctx, status) {
-	var percent = status.loaded_sprites/status.max;
+	var percent = status.loaded/status.max;
 	var height = 16;
 	var width = Math.min(canvas.width, 256);
 	var top = canvas.height/2 - height/2;
@@ -89,6 +89,7 @@ function main_function() {
 	
 	var loading = null;
 	var get_loadstatus = null;
+	var get_soundstatus = null;
 	
 	var last_timestamp = null;
 	function step(frame_begin) {
@@ -130,11 +131,14 @@ function main_function() {
 		} else if (loading == null) {
 			loading = true;
 			get_loadstatus = load_sprites();
+			get_soundstatus = load_sounds();
 		} else {
 			//loooooading bar
-			var status = get_loadstatus();
-			draw_loadingbar(the_canvas, the_ctx, status);
-			if (status.loaded_sprites >= status.max) loading = false;
+			var sprite_status = get_loadstatus();
+			var sound_status = get_soundstatus();
+			draw_loadingbar(the_canvas, the_ctx, {	loaded: sprite_status.loaded_sprites + sound_status.loaded_sounds,
+													max: sprite_status.max + sound_status.max});
+			if (sprite_status.loaded_sprites >= sprite_status.max && sound_status.loaded_sounds >= sound_status.max) loading = false;
 		}
 		
 		//render border in software instead of css
@@ -195,7 +199,8 @@ function main_function() {
 };
 
 if (document.getElementById("game_canvas").getContext != undefined)
-	loadScripts([	"script/debug.js", "script/sprite.js", "script/world.js", "script/world_draw.js",
+	loadScripts([	"script/debug.js", "script/sprite.js", "script/sound.js",
+					"script/world.js", "script/world_draw.js",
 					"script/state.js", "script/menustate.js", "script/worldstate.js",
 					"script/pausestate.js", "script/leveloverstate.js",
 					"script/levels.js",
