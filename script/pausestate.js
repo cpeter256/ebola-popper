@@ -25,7 +25,7 @@ PauseState.prototype.draw = function(canvas, ctx) {
 	ctx.textAlign = "center";
 	ctx.fillText(pausemessage, 0, 40);
 
-	ctx.restore;
+	ctx.restore();
 	ctx.drawImage(sprites["PlayButton"], 20, 350); //placeholder button, should be Unpausebutton
 	ctx.drawImage(sprites["AboutButton"], canvas.width-276, 350); //Placeholder, need quit/main menu button
 };
