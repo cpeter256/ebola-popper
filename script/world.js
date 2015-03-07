@@ -144,6 +144,15 @@ var Action = function(x, y, action) {
 	this.y = y;
 	this.action = action;
 };
+
+World.prototype.do_sound = function() {
+	if (this.action_queue.length > 0) {
+		if (this.action_queue[0][0].action == "splosion") {
+			play_sound("BloodExplosionSound");
+		}
+	}
+};
+
 World.prototype.advance_state = function() {
 	//pop front of action queue, push relevant actions onto action queue, update cells
 	//remember: action queue is a 2d array- actions[x][y] means an action that takes place x turns from now. All actions with the same y happen simultaneously.

@@ -55,8 +55,11 @@ WorldState.prototype.constructor = WorldState;
 	this.pop_state(this);
 };*/
 
-WorldState.prototype.draw = function(canvas, ctx) {
+WorldState.prototype.handle_max_state = function() {
 	if (this.state_max == null && this.world.action_queue.length > 0) {
+		//oh god this hack
+		this.world.do_sound();
+		
 		this.state_max = this.move_max;
 		if (this.world.action_queue[0][0].action == "splosion") {
 			this.state_max = this.splode_max;
@@ -64,6 +67,10 @@ WorldState.prototype.draw = function(canvas, ctx) {
 			this.state_max = this.wait_max;
 		}
 	}
+};
+
+WorldState.prototype.draw = function(canvas, ctx) {
+	this.handle_max_state();
 	var state_percent = 0;
 	if (this.state_max != null) state_percent = this.state_time/this.state_max;
 	if (state_percent > 1) state_percent = 1;
@@ -85,16 +92,7 @@ WorldState.prototype.draw = function(canvas, ctx) {
 WorldState.prototype.advance = function() {
 	var status = this.world.advance_state();
 	this.state_max = null;
-	if (this.world.action_queue.length > 0) {
-		this.state_max = this.move_max;
-		if (this.world.action_queue[0].length > 0) {
-			if (this.world.action_queue[0][0].action == "splosion") {
-				this.state_max = this.splode_max;
-			} else if (this.world.action_queue[0][0].action == "wait") {
-				this.state_max = this.wait_max;
-			}
-		}
-	}
+	this.handle_max_state();
 	if (status != null) {
 		switch (status) {
 		case "win":
