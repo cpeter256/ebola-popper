@@ -41,6 +41,54 @@ LevelSelectState.prototype.draw = function(canvas, ctx) {
 	ctx.drawImage(sprites["Levelone"], 405, 280); 
 	ctx.drawImage(sprites["Levelone"], 525, 280); 
 	ctx.drawImage(sprites["PlayButton"], this.canvas.width/2 - 128, 370); //placeholder button, should be Unpausebutton	
+	
+	ctx.globalAlpha = .2;
+	ctx.fillStyle = "#000000";
+	
+	if(this.menu.max_level < 14){
+		ctx.fillRect(525, 280, 70, 70);
+	}
+	if(this.menu.max_level < 13){
+		ctx.fillRect(405, 280, 70, 70);
+	}	
+	if(this.menu.max_level < 12){
+		ctx.fillRect(285, 280, 70, 70);
+	}
+	if(this.menu.max_level < 11){
+		ctx.fillRect(165, 280, 70, 70);
+	}		
+	if(this.menu.max_level < 10){
+		ctx.fillRect(45, 280, 70, 70);
+	}
+	if(this.menu.max_level < 9){
+		ctx.fillRect(525, 180, 70, 70);
+	}
+	if(this.menu.max_level < 8){
+		ctx.fillRect(405, 180, 70, 70);
+	}
+	if(this.menu.max_level < 7){
+		ctx.fillRect(285, 180, 70, 70);
+	}
+	if(this.menu.max_level < 6){
+		ctx.fillRect(165, 180, 70, 70);
+	}
+	if(this.menu.max_level < 5){
+		ctx.fillRect(45, 180, 70, 70);
+	}
+	if(this.menu.max_level < 4){
+		ctx.fillRect(525, 80, 70, 70);
+	}
+	if(this.menu.max_level < 3){
+		ctx.fillRect(405, 80, 70, 70);
+	}
+	if(this.menu.max_level < 2){
+		ctx.fillRect(285, 80, 70, 70);
+	}
+	if(this.menu.max_level < 1){
+		ctx.fillRect(165, 80, 70, 70);
+	}
+	ctx.globalAlpha = 1;
+	ctx.restore();
 
 };
 LevelSelectState.prototype.onmousedown = function(e) {
@@ -135,15 +183,16 @@ LevelSelectState.prototype.onmousedown = function(e) {
 			}
 		}
 		if(e.layerX>=this.canvas.width/2 - 128 && e.layerX<=this.canvas.width/2 - 128 + 256 && e.layerY>=370 && e.layerY<=370+96 ){
-			this.pop_state(this);
-			this.menu.pop_world();
+			this.pop_state();
+			//console.log (this.pop_state_raw);
+			//this.menu.pop_world();
 		}
 	}
 };
 
 LevelSelectState.prototype.gotoLevel = function(){
 		this.pop_state(this);
-		this.menu.pop_world();
+		//this.menu.pop_world();
 		this.menu.launch_current_level();
 };
 

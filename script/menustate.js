@@ -88,7 +88,7 @@ MenuState.prototype.onmousedown = function(e) {
 					this.launch_current_level();
 					break;
 				case "level":
-					this.push_state(new LevelSelectState(this.canvas, this.max_level, this.push_state,this.pop_state_raw));
+					this.push_state(new LevelSelectState(this.canvas, this.push_state, 	this.pop_state_raw));
 					break;
 				case "about":
 					window.open("http://cmpmebolapopper.wikia.com/wiki/CmpmEbolaPopper_Wiki");

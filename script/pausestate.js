@@ -48,7 +48,7 @@ PauseState.prototype.onmousedown = function(e) {
 		if(e.layerX>=20 && e.layerX<=20+256 && e.layerY>=350 && e.layerY<=350+96){
 			this.pop_state(this);
 		}
-		if(e.layerX>=this.canvas.width-276 && e.layerX<=this.canvas.width-20 && e.layerY>=350 && e.layerY<=350+96){
+		if(e.layerX>=this.canvas.width-276 && e.layerX<=this.canvas.width-20 && e.layerY>=350 && e.layerY<=350+96){//
 			this.pop_state(this);
 			this.menu.pop_world();
 		}
