@@ -13,7 +13,12 @@ var sprites = {	"Villager": null,
 				"PlayButton": null,
 				"LevelButton": null,
 				"AboutButton": null,
+				// "RetryButton": null,
+				// "MainMenuButton": null,
+				// "NextlevelButton": null,
+				// "ContinueButton": null,
 				"Logo":null,
+				"Levelone":null,
 			};
 
 //Call this and all the sprites will load eventually

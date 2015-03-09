@@ -57,9 +57,16 @@ MenuState.prototype.draw=function(canvas,ctx){
 	var aboutBut = sprites["AboutButton"];
 	
 
-	
-	ctx.drawImage(playBut,	0, 0, playBut.width, playBut.height,
+	if(this.current_level > 0) //If advanced past first stage, button becomes continue playing, using about button as place holder
+	{
+		ctx.drawImage(aboutBut,	0, 0, playBut.width, playBut.height,
+							this.playButtonInfo.x_min, this.playButtonInfo.y_min, this.playButtonInfo.width, this.playButtonInfo.height);		
+	}
+	else
+	{
+		ctx.drawImage(playBut,	0, 0, playBut.width, playBut.height,
 							this.playButtonInfo.x_min, this.playButtonInfo.y_min, this.playButtonInfo.width, this.playButtonInfo.height);
+	}
 	ctx.drawImage(levelSelectBut,	0, 0, levelSelectBut.width, levelSelectBut.height,
 									this.levelButtonInfo.x_min, this.levelButtonInfo.y_min, this.levelButtonInfo.width, this.levelButtonInfo.height);
 	ctx.drawImage(aboutBut,	0, 0, aboutBut.width, aboutBut.height,
@@ -80,8 +87,7 @@ MenuState.prototype.onmousedown = function(e) {
 					this.launch_current_level();
 					break;
 				case "level":
-					console.log("in level case");
-					this.push_state(new LevelSelectState(this.canvas, this.current_level - 1, this.push_state,this.pop_state));
+					this.push_state(new LevelSelectState(this.canvas, this.current_level - 1, this.push_state,this.pop_state_raw));
 					break;
 				case "about":
 					//this.push_state(new LevelSelectState(this.push_state,this.pop_state));
