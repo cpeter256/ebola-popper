@@ -120,9 +120,9 @@ b++++b\n\
 
 levels["level_11"]="\
 b+++++++++++b\n\
-++++++++++++b\n\
-++++++++ibb+b\n\
-+++++++vbbb+b\n\
++++++++++++++\n\
+++++++++ibb++\n\
++++++++vbbb++\n\
 +++++++++ib++\n\
 ++++++v++i+++\n\
 b+++++++++++b\n\
@@ -147,6 +147,27 @@ b++++++++b\n\
 b++i+ere+b\n\
 ";
 
+levels["level_14"]="\
+b+++++b\n\
++b++rbr\n\
++++r+i+\n\
+++v+v++\n\
++++++++\n\
+i++v++i\n\
++b+++b+\n\
+beeeeeb\n\
+";
+
+levels["level_15"]="\
+b+++++++b\n\
++++++e+e+\n\
++++v++v+e\n\
+r+++v++++\n\
++rv+ev+++\n\
+++r+v++++\n\
+b++r+v++b\n\
+";
+
 
 var all_levels = [	{name: "level_1", par: 1},
 					{name: "level_2", par: 1},
@@ -160,5 +181,7 @@ var all_levels = [	{name: "level_1", par: 1},
 					{name: "level_10", par: 5},
 					{name: "level_11", par: 8}, 
 					{name: "level_12", par: 5},
-					{name: "level_13", par: 8}];
-	
+					{name: "level_13", par: 8},
+					{name: "level_14", par: 11},
+					{name: "level_15", par: 13}
+				];

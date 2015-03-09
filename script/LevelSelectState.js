@@ -1,12 +1,12 @@
-"use strict"
+"use strict";
 
-function LevelSelectState(canvas, playerProgession, push_state, pop_state) {
+function LevelSelectState(canvas, push_state, pop_state) {
 	State.apply(this, [push_state, pop_state]);
 	this.request_menu = true;
 	this.menu = null;
-	this.playerProgession = playerProgession;
+	//this.max_level = max_level;
 	
-	this.canvas=canvas;
+	this.canvas = canvas;
 }
 LevelSelectState.prototype = Object.create(State.prototype);
 LevelSelectState.prototype.constructor = LevelSelectState;
@@ -50,62 +50,90 @@ LevelSelectState.prototype.onmousedown = function(e) {
 			this.menu.current_level = 0;			
 			this.gotoLevel();
 		}
-		if(e.layerX>=165 && e.layerX<=165+70 && e.layerY>=80 && e.layerY<=80+70 ){
-			this.menu.current_level = 1;			
-			this.gotoLevel();
+		if(this.menu.max_level > 0){
+			if(e.layerX>=165 && e.layerX<=165+70 && e.layerY>=80 && e.layerY<=80+70 ){
+				this.menu.current_level = 1;			
+				this.gotoLevel();
+			}
 		}
-		if(e.layerX>=285 && e.layerX<=285+70 && e.layerY>=80 && e.layerY<=80+70 ){
-			this.menu.current_level = 2;			
-			this.gotoLevel();
+		if(this.menu.max_level > 1){
+			if(e.layerX>=285 && e.layerX<=285+70 && e.layerY>=80 && e.layerY<=80+70 ){
+				this.menu.current_level = 2;			
+				this.gotoLevel();
+			}
 		}
-		if(e.layerX>=405 && e.layerX<=405+70 && e.layerY>=80 && e.layerY<=80+70 ){
-			this.menu.current_level = 3;			
-			this.gotoLevel();
+		if(this.menu.max_level > 2){
+			if(e.layerX>=405 && e.layerX<=405+70 && e.layerY>=80 && e.layerY<=80+70 ){
+				this.menu.current_level = 3;			
+				this.gotoLevel();
+			}
 		}
-		if(e.layerX>=525 && e.layerX<=525+70 && e.layerY>=80 && e.layerY<=80+70 ){
-			this.menu.current_level = 4;			
-			this.gotoLevel();
+		if(this.menu.max_level > 3){
+			if(e.layerX>=525 && e.layerX<=525+70 && e.layerY>=80 && e.layerY<=80+70 ){
+				this.menu.current_level = 4;			
+				this.gotoLevel();
+			}
 		}
-		if(e.layerX>=45 && e.layerX<=45+70 && e.layerY>=180 && e.layerY<=180+70 ){
-			this.menu.current_level = 5;			
-			this.gotoLevel();
+		if(this.menu.max_level > 4){
+			if(e.layerX>=45 && e.layerX<=45+70 && e.layerY>=180 && e.layerY<=180+70 ){
+				this.menu.current_level = 5;			
+				this.gotoLevel();
+			}
 		}
-		if(e.layerX>=165 && e.layerX<=165+70 && e.layerY>=180 && e.layerY<=180+70 ){
-			this.menu.current_level = 6;			
-			this.gotoLevel();
+		if(this.menu.max_level > 5){
+			if(e.layerX>=165 && e.layerX<=165+70 && e.layerY>=180 && e.layerY<=180+70 ){
+				this.menu.current_level = 6;			
+				this.gotoLevel();
+			}
 		}
-		if(e.layerX>=285 && e.layerX<=285+70 && e.layerY>=180 && e.layerY<=180+70 ){
-			this.menu.current_level = 7;			
-			this.gotoLevel();
+		if(this.menu.max_level > 6){
+			if(e.layerX>=285 && e.layerX<=285+70 && e.layerY>=180 && e.layerY<=180+70 ){
+				this.menu.current_level = 7;			
+				this.gotoLevel();
+			}
 		}
-		if(e.layerX>=405 && e.layerX<=405+70 && e.layerY>=180 && e.layerY<=180+70 ){
-			this.menu.current_level = 8;			
-			this.gotoLevel();
+		if(this.menu.max_level > 7){
+			if(e.layerX>=405 && e.layerX<=405+70 && e.layerY>=180 && e.layerY<=180+70 ){
+				this.menu.current_level = 8;			
+				this.gotoLevel();
+			}
 		}
-		if(e.layerX>=525 && e.layerX<=525+70 && e.layerY>=180 && e.layerY<=180+70 ){
-			this.menu.current_level = 9;			
-			this.gotoLevel();
+		if(this.menu.max_level > 8){
+			if(e.layerX>=525 && e.layerX<=525+70 && e.layerY>=180 && e.layerY<=180+70 ){
+				this.menu.current_level = 9;			
+				this.gotoLevel();
+			}
 		}
-		if(e.layerX>=45 && e.layerX<=45+70 && e.layerY>=280 && e.layerY<=280+70 ){
-			this.menu.current_level = 10;			
-			this.gotoLevel();
+		if(this.menu.max_level > 10){
+			if(e.layerX>=45 && e.layerX<=45+70 && e.layerY>=280 && e.layerY<=280+70 ){
+				this.menu.current_level = 10;			
+				this.gotoLevel();
+			}
 		}
-		if(e.layerX>=165 && e.layerX<=165+70 && e.layerY>=280 && e.layerY<=280+70 ){
-			this.menu.current_level = 11;			
-			this.gotoLevel();
+		if(this.menu.max_level > 11){
+			if(e.layerX>=165 && e.layerX<=165+70 && e.layerY>=280 && e.layerY<=280+70 ){
+				this.menu.current_level = 11;			
+				this.gotoLevel();
+			}
 		}
-		if(e.layerX>=285 && e.layerX<=285+70 && e.layerY>=280 && e.layerY<=280+70 ){
-			this.menu.current_level = 12;			
-			this.gotoLevel();
+		if(this.menu.max_level > 12){
+			if(e.layerX>=285 && e.layerX<=285+70 && e.layerY>=280 && e.layerY<=280+70 ){
+				this.menu.current_level = 12;			
+				this.gotoLevel();
+			}
 		}
-		// if(e.layerX>=405 && e.layerX<=405+70 && e.layerY>=280 && e.layerY<=280+70 ){
-		// 	this.menu.current_level = 13;			
-		// 	this.gotoLevel();
-		// }
-		// if(e.layerX>=525 && e.layerX<=525+70 && e.layerY>=280 && e.layerY<=280+70 ){
-		// 	this.menu.current_level = 14;			
-		// 	this.gotoLevel();
-		// }
+		if(this.menu.max_level > 13){
+			if(e.layerX>=405 && e.layerX<=405+70 && e.layerY>=280 && e.layerY<=280+70 ){
+				this.menu.current_level = 13;			
+			 	this.gotoLevel();
+			}
+		}
+		if(this.menu.max_level > 14){
+			if(e.layerX>=525 && e.layerX<=525+70 && e.layerY>=280 && e.layerY<=280+70 ){
+			 	this.menu.current_level = 14;			
+			 	this.gotoLevel();
+			}
+		}
 		if(e.layerX>=this.canvas.width/2 - 128 && e.layerX<=this.canvas.width/2 - 128 + 256 && e.layerY>=370 && e.layerY<=370+96 ){
 			this.pop_state(this);
 			this.menu.pop_world();
@@ -117,5 +145,5 @@ LevelSelectState.prototype.gotoLevel = function(){
 		this.pop_state(this);
 		this.menu.pop_world();
 		this.menu.launch_current_level();
-}
+};
 

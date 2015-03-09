@@ -69,7 +69,12 @@ LevelOverState.prototype.onmousedown = function(e) {
 };
 LevelOverState.prototype.nextLevel = function(){
 	if (this.victory) {
-		if (this.menu.current_level < all_levels.length-1) this.menu.current_level++;
+		if (this.menu.current_level < all_levels.length-1){
+			this.menu.current_level++; 
+			if (this.menu.current_level == this.menu.max_level || this.menu.current_level > this.menu.max_level){
+				this.menu.max_level++;
+			}
+		}
 	}
 };
 LevelOverState.prototype.goToMainMenu = function(){
