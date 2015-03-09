@@ -203,5 +203,5 @@ if (document.getElementById("game_canvas").getContext != undefined)
 					"script/world.js", "script/world_draw.js",
 					"script/state.js", "script/menustate.js", "script/worldstate.js",
 					"script/pausestate.js", "script/leveloverstate.js",
-					"script/levels.js",
+					"script/levels.js", "script/LevelSelectState.js",
 				], main_function);

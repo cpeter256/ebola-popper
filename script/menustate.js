@@ -80,7 +80,8 @@ MenuState.prototype.onmousedown = function(e) {
 					this.launch_current_level();
 					break;
 				case "level":
-					//this.push_state(new AboutState(this.push_state,this.pop_state));
+					console.log("in level case");
+					this.push_state(new LevelSelectState(this.canvas, this.current_level - 1, this.push_state,this.pop_state));
 					break;
 				case "about":
 					//this.push_state(new LevelSelectState(this.push_state,this.pop_state));
