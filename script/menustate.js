@@ -90,7 +90,7 @@ MenuState.prototype.onmousedown = function(e) {
 					this.push_state(new LevelSelectState(this.canvas, this.current_level - 1, this.push_state,this.pop_state_raw));
 					break;
 				case "about":
-					//this.push_state(new LevelSelectState(this.push_state,this.pop_state));
+					window.open("http://cmpmebolapopper.wikia.com/wiki/CmpmEbolaPopper_Wiki");
 					break;
 				default:
 					console.log("unknown button pressed!");
