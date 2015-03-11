@@ -404,20 +404,32 @@ World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch, cursor_to, c
 			
 			switch (this.cells[i][j]) {
 			case "human":
-				ctx.drawImage(sprites["Villager"], x_off, 2+y_off, 40, 38, t_pos.x-20, t_pos.y-38, 40, 38);
-				if (trans_target != null) {
-					ctx.globalAlpha = time;
-					ctx.drawImage(sprites["Infected"], x_off, 2+y_off, 40, 38, t_pos.x-20, t_pos.y-38, 40, 38);
-					ctx.globalAlpha = 1;
+				if (trans_target == null || time < .5) {
+					ctx.drawImage(sprites["Villager"], x_off, 2+y_off, 40, 38, t_pos.x-20, t_pos.y-38, 40, 38);
 				}
+				if (trans_target != null){
+					ctx.globalAlpha = time*2;
+					ctx.drawImage(sprites["Pre-Infected"], x_off, 2+y_off, 40, 38, t_pos.x-20, t_pos.y-38, 40, 38);
+					if (time >= .5) {
+						ctx.globalAlpha = Math.max((time-.5)*2, 0);
+						ctx.drawImage(sprites["Infected"], x_off, 2+y_off, 40, 38, t_pos.x-20, t_pos.y-38, 40, 38);
+					}
+				}
+				ctx.globalAlpha = 1;
 				break;
 			case "infected":
-				ctx.drawImage(sprites["Infected"], x_off, 2+y_off, 40, 38, t_pos.x-20, t_pos.y-38, 40, 38);
-				if (trans_target != null) {
-					ctx.globalAlpha = time;
-					ctx.drawImage(sprites["Explosive"], x_off, 2+y_off, 40, 38, t_pos.x-20, t_pos.y-38, 40, 38);
-					ctx.globalAlpha = 1;
+				if (trans_target == null || time < .5) {
+					ctx.drawImage(sprites["Infected"], x_off, 2+y_off, 40, 38, t_pos.x-20, t_pos.y-38, 40, 38);
 				}
+				if (trans_target != null){
+					ctx.globalAlpha = time*2;
+					ctx.drawImage(sprites["Pre-Explosive"], x_off, 2+y_off, 40, 38, t_pos.x-20, t_pos.y-38, 40, 38);
+					if (time >= .5) {
+						ctx.globalAlpha = Math.max((time-.5)*2, 0);
+						ctx.drawImage(sprites["Explosive"], x_off, 2+y_off, 40, 38, t_pos.x-20, t_pos.y-38, 40, 38);
+					}
+				}
+				ctx.globalAlpha = 1;
 				break;
 			case "explosive":
 				ctx.drawImage(sprites["Explosive"], x_off, 2+y_off, 40, 38, t_pos.x-20, t_pos.y-38, 40, 38);

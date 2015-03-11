@@ -2,7 +2,9 @@
 
 //Map of every sprite path to an Image of the sprite
 var sprites = {	"Villager": null,
+				"Pre-Infected": null,
 				"Infected": null,
+				"Pre-Explosive": null,
 				"Explosive": null,
 				"Blob": null,
 				"Dirt1": null,
