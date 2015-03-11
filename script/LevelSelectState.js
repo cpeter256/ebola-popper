@@ -16,30 +16,49 @@ LevelSelectState.prototype.draw = function(canvas, ctx) {
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
 	
 	var pausemessage;
-	pausemessage = "Level Select";
 	ctx.save();
 	ctx.fillStyle = "#FF0000";
 	ctx.translate(canvas.width/2, 0);
 	ctx.scale(4, 4);
 	ctx.textAlign = "center";
-	ctx.fillText(pausemessage, 0, 10);
+	ctx.font = "10px Helvetica"
+	ctx.fillText("Level Select", 0, 10);
+	var number = "1";
 
 	ctx.restore();
+	ctx.textAlign = "center";
+	ctx.fillStyle = "#FF0000";
+	ctx.font = "50px Helvetica";
 	ctx.drawImage(sprites["Levelone"], 45, 80); //placeholder button, should be level
+	ctx.fillText("1", 80, 130);
 	ctx.drawImage(sprites["Levelone"], 165, 80);
+	ctx.fillText("2", 200, 130);
 	ctx.drawImage(sprites["Levelone"], 285, 80); 
+	ctx.fillText("3", 320, 130);
 	ctx.drawImage(sprites["Levelone"], 405, 80); 
+	ctx.fillText("4", 440, 130);
 	ctx.drawImage(sprites["Levelone"], 525, 80); 
+	ctx.fillText("5", 560, 130);
 	ctx.drawImage(sprites["Levelone"], 45, 180); //placeholder button, should be level
+	ctx.fillText("6", 80, 230);
 	ctx.drawImage(sprites["Levelone"], 165, 180);
+	ctx.fillText("7", 200, 230);
 	ctx.drawImage(sprites["Levelone"], 285, 180); 
+	ctx.fillText("8", 320, 230);
 	ctx.drawImage(sprites["Levelone"], 405, 180); 
+	ctx.fillText("9", 440, 230);
 	ctx.drawImage(sprites["Levelone"], 525, 180); 
+	ctx.fillText("10", 560, 230);
 	ctx.drawImage(sprites["Levelone"], 45, 280); //placeholder button, should be level
+	ctx.fillText("11", 80, 330);
 	ctx.drawImage(sprites["Levelone"], 165, 280);
+	ctx.fillText("12", 200, 330);
 	ctx.drawImage(sprites["Levelone"], 285, 280); 
+	ctx.fillText("13", 320, 330);
 	ctx.drawImage(sprites["Levelone"], 405, 280); 
+	ctx.fillText("14", 440, 330);
 	ctx.drawImage(sprites["Levelone"], 525, 280); 
+	ctx.fillText("15", 560, 330);
 	ctx.drawImage(sprites["PlayButton"], this.canvas.width/2 - 128, 370); //placeholder button, should be Unpausebutton	
 	
 	ctx.globalAlpha = .2;
