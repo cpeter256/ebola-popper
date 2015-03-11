@@ -432,10 +432,22 @@ World.prototype.draw = function(ctx, time, x, y, scale, yaw, pitch, cursor_to, c
 				ctx.globalAlpha = 1;
 				break;
 			case "explosive":
-				ctx.drawImage(sprites["Explosive"], x_off, 2+y_off, 40, 38, t_pos.x-20, t_pos.y-38, 40, 38);
+				if (splode_disp.length > 0) {
+					ctx.globalAlpha = 1-time;
+					ctx.drawImage(sprites["Exploding"], x_off, 2+y_off, 40, 38, t_pos.x-20+2.5, t_pos.y-38+2.5, 40, 38);
+					ctx.globalAlpha = 1;
+				} else {
+					ctx.drawImage(sprites["Explosive"], x_off, 2+y_off, 40, 38, t_pos.x-20, t_pos.y-38, 40, 38);
+					if (trans_target != null) {
+						ctx.globalAlpha = time;
+						ctx.drawImage(sprites["Exploding"], x_off, 2+y_off, 40, 38, t_pos.x-20+2.5, t_pos.y-38+2.5, 40, 38);
+						ctx.globalAlpha = 1;
+					}
+				}
 				break;
 			case "rock": {
 				ctx.drawImage(sprites["Rock"], 0, 0, 40, 40, t_pos.x-20, t_pos.y-35, 40, 40);
+				break;
 			}
 			case "void":
 			case null:
