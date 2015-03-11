@@ -59,7 +59,7 @@ LevelSelectState.prototype.draw = function(canvas, ctx) {
 	ctx.fillText("14", 440, 330);
 	ctx.drawImage(sprites["Levelone"], 525, 280); 
 	ctx.fillText("15", 560, 330);
-	ctx.drawImage(sprites["PlayButton"], this.canvas.width/2 - 128, 370); //placeholder button, should be Unpausebutton	
+	ctx.drawImage(sprites["BackButton"], this.canvas.width/2 - 128, 370); //placeholder button, should be Unpausebutton	
 	
 	ctx.textAlight = "start";
 	ctx.globalAlpha = .2;

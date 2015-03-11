@@ -43,7 +43,7 @@ LevelOverState.prototype.draw = function(canvas, ctx) {
 	
 	ctx.restore();
 	ctx.drawImage(sprites["MainMenuButton"], 20, 350);
-	ctx.drawImage(sprites["LevelButton"], canvas.width-276, 350);
+	ctx.drawImage(sprites["NextLevelButton"], canvas.width-276, 350);
 	
 };//256,96
 LevelOverState.prototype.onmousedown = function(e) {
