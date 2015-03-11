@@ -61,6 +61,7 @@ LevelSelectState.prototype.draw = function(canvas, ctx) {
 	ctx.fillText("15", 560, 330);
 	ctx.drawImage(sprites["PlayButton"], this.canvas.width/2 - 128, 370); //placeholder button, should be Unpausebutton	
 	
+	ctx.textAlight = "start";
 	ctx.globalAlpha = .2;
 	ctx.fillStyle = "#000000";
 	
@@ -108,6 +109,7 @@ LevelSelectState.prototype.draw = function(canvas, ctx) {
 	}
 	ctx.globalAlpha = 1;
 	ctx.restore();
+	ctx.font = "10px sans-serif";
 
 };
 LevelSelectState.prototype.onmousedown = function(e) {
