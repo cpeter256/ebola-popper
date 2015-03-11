@@ -42,7 +42,7 @@ LevelOverState.prototype.draw = function(canvas, ctx) {
 	ctx.fillText(message3, 0, 40);
 	
 	ctx.restore();
-	ctx.drawImage(sprites["PlayButton"], 20, 350);
+	ctx.drawImage(sprites["MainMenuButton"], 20, 350);
 	ctx.drawImage(sprites["LevelButton"], canvas.width-276, 350);
 	
 };//256,96

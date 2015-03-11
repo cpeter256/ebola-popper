@@ -29,8 +29,8 @@ PauseState.prototype.draw = function(canvas, ctx) {
 	ctx.fillText(pausemessage, 0, 40);
 
 	ctx.restore();
-	ctx.drawImage(sprites["PlayButton"], 20, 350); //placeholder button, should be Unpausebutton
-	ctx.drawImage(sprites["LevelButton"], canvas.width-276, 350); //Placeholder, need quit/main menu button
+	ctx.drawImage(sprites["MainMenuButton"], 20, 375);
+	ctx.drawImage(sprites["UnpauseButton"], canvas.width-276, 375); 
 };
 
 PauseState.prototype.onkeydown = function(keyCode) {
@@ -45,12 +45,12 @@ PauseState.prototype.onkeydown = function(keyCode) {
 PauseState.prototype.onmousedown = function(e) {
 
 	if(e.button == 0){
-		if(e.layerX>=20 && e.layerX<=20+256 && e.layerY>=350 && e.layerY<=350+96){
-			this.pop_state(this);
-		}
-		if(e.layerX>=this.canvas.width-276 && e.layerX<=this.canvas.width-20 && e.layerY>=350 && e.layerY<=350+96){//
+		if(e.layerX>=20 && e.layerX<=20+256 && e.layerY>=375 && e.layerY<=375+96){
 			this.pop_state(this);
 			this.menu.pop_world();
+		}
+		if(e.layerX>=this.canvas.width-276 && e.layerX<=this.canvas.width-20 && e.layerY>=375 && e.layerY<=375+96){//
+			this.pop_state(this);
 		}
 	}
 };

@@ -56,11 +56,11 @@ MenuState.prototype.draw=function(canvas,ctx){
 	var playBut = sprites["PlayButton"];
 	var levelSelectBut = sprites["LevelButton"];
 	var aboutBut = sprites["AboutButton"];
-	
+	var continueBut=sprites["ContinueButton"];
 
 	if(this.current_level > 0) //If advanced past first stage, button becomes continue playing, using about button as place holder
 	{
-		ctx.drawImage(aboutBut,	0, 0, playBut.width, playBut.height,
+		ctx.drawImage(continueBut,	0, 0, playBut.width, playBut.height,
 							this.playButtonInfo.x_min, this.playButtonInfo.y_min, this.playButtonInfo.width, this.playButtonInfo.height);		
 	}
 	else
