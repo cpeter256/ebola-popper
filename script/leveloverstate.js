@@ -7,6 +7,7 @@ function LevelOverState(par, player_moves, victory, canvas, push_state, pop_stat
 	this.type = "levelover";
 	this.par = par;
 	this.player_moves = player_moves;
+	this.winOrLoseSprite=null;
 	
 	this.victory = victory;
 	this.canvas = canvas;
@@ -18,7 +19,7 @@ LevelOverState.prototype.draw = function(canvas, ctx) {
 	ctx.fillStyle = "#000000";
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
 	ctx.globalAlpha = 1;
-	
+
 	var message1;
 	var message2;
 	var message3;
@@ -26,10 +27,12 @@ LevelOverState.prototype.draw = function(canvas, ctx) {
 		message1 = "You win!";
 		message2 = "You won in " + this.player_moves + (this.player_moves == 1 ? " move" : " moves");
 		message3 = "Par is " + this.par;
+		this.winOrLoseSprite=sprites["NextLevelButton"];
 	} else {
-		message1 = "You lose!";
-		message2 = "You failed to clear the level.";
+		message1 = "Villagers win";
+		message2 = "You lose!";
 		message3 = "Try again?";
+		this.winOrLoseSprite=sprites["RetryButton"];
 	}
 	
 	ctx.save();
@@ -43,7 +46,7 @@ LevelOverState.prototype.draw = function(canvas, ctx) {
 	
 	ctx.restore();
 	ctx.drawImage(sprites["MainMenuButton"], 20, 350);
-	ctx.drawImage(sprites["NextLevelButton"], canvas.width-276, 350);
+	ctx.drawImage(this.winOrLoseSprite, canvas.width-276, 350);
 	
 };//256,96
 LevelOverState.prototype.onmousedown = function(e) {
