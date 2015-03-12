@@ -8,7 +8,7 @@ function WorldState(levelname, par, canvas, push_state, pop_state) {
 	
 	this.num_moves = 0;
 	this.par = par;
-	
+
 	this.move_max = 1000;	//ms
 	this.wait_max = 250;
 	this.splode_max = 500;
@@ -32,21 +32,21 @@ function WorldState(levelname, par, canvas, push_state, pop_state) {
 	this.d_yaw = 0;
 	this.d_pitch = 0;
 	
-	//smelly test shit
-	//hardcoding a level yeaaaaaa
-	/*this.world.cells[1][0] = "human";
-	this.world.cells[1][2] = "explosive";
-	this.world.cells[3][1] = "explosive";
-	this.world.cells[3][2] = "explosive";
-	this.world.cells[4][2] = "explosive";
-	this.world.cells[4][3] = "explosive";
-	this.world.cells[5][3] = "explosive";
-	this.world.cells[5][4] = "explosive";
-	this.world.cells[5][5] = "explosive";
-	
-	this.world.cells[5][6] = "void";
-	this.world.cells[6][5] = "rock";*/
-	
+	if(levelname == "level_1") this.level = 1;
+	if(levelname == "level_2") this.level = 2;
+	if(levelname == "level_3") this.level = 3;
+	if(levelname == "level_4") this.level = 4;
+	if(levelname == "level_5") this.level = 5;
+	if(levelname == "level_6") this.level = 6;
+	if(levelname == "level_7") this.level = 7;
+	if(levelname == "level_8") this.level = 8;
+	if(levelname == "level_9") this.level = 9;
+	if(levelname == "level_10") this.level = 10;
+	if(levelname == "level_11") this.level = 11;
+	if(levelname == "level_12") this.level = 12;
+	if(levelname == "level_13") this.level = 13;
+	if(levelname == "level_14") this.level = 14;
+	if(levelname == "level_15") this.level = 15;
 }
 WorldState.prototype = Object.create(State.prototype);
 WorldState.prototype.constructor = WorldState;
@@ -88,6 +88,8 @@ WorldState.prototype.draw = function(canvas, ctx) {
 
 	ctx.fillStyle = "#000000";
 	ctx.fillText("" + this.num_moves + (this.num_moves == 1 ? " move" : " moves"), 2, 9);
+	ctx.fillText("Level " + (this.level), 2, 18);
+	ctx.fillText("Par is " + this.par, 2, 27);
 };
 WorldState.prototype.advance = function() {
 	var status = this.world.advance_state();
