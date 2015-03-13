@@ -102,6 +102,12 @@ MenuState.prototype.onmousedown = function(e) {
 	}
 };
 
+MenuState.prototype.onkeydown = function(keycode) {
+	if(keycode== 85){ // u
+		this.max_level=15;	
+	}
+};
+
 MenuState.prototype.launch_current_level = function() {
 	if (this.current_world == null) {
 		this.current_world = new WorldState(all_levels[this.current_level].name, all_levels[this.current_level].par, this.canvas, this.push_state, this.pop_state_raw);
