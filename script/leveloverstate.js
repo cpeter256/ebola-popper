@@ -41,12 +41,13 @@ LevelOverState.prototype.draw = function(canvas, ctx) {
 	ctx.scale(4, 4);
 	ctx.textAlign = "center";
 	ctx.fillText(message1, 0, 0);
-	ctx.fillText(message2, 0, 20);
-	ctx.fillText(message3, 0, 40);
+	ctx.fillText(message2, 0, 15);
+	ctx.fillText(message3, 0, 30);
 	
 	ctx.restore();
-	ctx.drawImage(sprites["MainMenuButton"], 20, 350);
-	ctx.drawImage(this.winOrLoseSprite, canvas.width-276, 350);
+	ctx.drawImage(sprites["MainMenuButton"], 20, 355);
+	ctx.drawImage(this.winOrLoseSprite, canvas.width-276, 355);
+	ctx.drawImage(sprites["ReplayButton"], canvas.width/2 - 128, 250);
 	
 };//256,96
 LevelOverState.prototype.onmousedown = function(e) {
@@ -59,12 +60,18 @@ LevelOverState.prototype.onmousedown = function(e) {
 	
 	this.menu.launch_current_level();*/
 	if(e.button == 0){
-		if(e.layerX>=20 && e.layerX<=20+256 && e.layerY>=350 && e.layerY<=350+96){
+		if(e.layerX>=20 && e.layerX<=20+256 && e.layerY>=355 && e.layerY<=355+96){
 			this.nextLevel();
 			this.goToMainMenu();
 		}
-		if(e.layerX>=this.canvas.width-276 && e.layerX<=this.canvas.width-20 && e.layerY>=350 && e.layerY<=350+96){
+		if(e.layerX>=this.canvas.width-276 && e.layerX<=this.canvas.width-20 && e.layerY>=355 && e.layerY<=355+96){
 			this.nextLevel();
+			this.goToMainMenu();
+			this.menu.launch_current_level();
+		}
+		if(e.layerX>=this.canvas.width/2 - 128 && e.layerX<=this.canvas.width/2+128 && e.layerY>=240 && e.layerY<=240+96){
+			this.nextLevel();
+			this.menu.current_level--;
 			this.goToMainMenu();
 			this.menu.launch_current_level();
 		}

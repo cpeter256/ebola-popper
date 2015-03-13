@@ -31,6 +31,7 @@ PauseState.prototype.draw = function(canvas, ctx) {
 	ctx.restore();
 	ctx.drawImage(sprites["MainMenuButton"], 20, 375);
 	ctx.drawImage(sprites["UnpauseButton"], canvas.width-276, 375); 
+	ctx.drawImage(sprites["ReplayButton"], canvas.width/2 - 128, 270);
 };
 
 PauseState.prototype.onkeydown = function(keyCode) {
@@ -51,6 +52,11 @@ PauseState.prototype.onmousedown = function(e) {
 		}
 		if(e.layerX>=this.canvas.width-276 && e.layerX<=this.canvas.width-20 && e.layerY>=375 && e.layerY<=375+96){//
 			this.pop_state(this);
+		}		
+		if(e.layerX>=this.canvas.width/2 - 128 && e.layerX<=this.canvas.width/2+128 && e.layerY>=270 && e.layerY<=270+96){
+			this.pop_state(this);
+			this.menu.pop_world();
+			this.menu.launch_current_level();
 		}
 	}
 };
